@@ -1,7 +1,7 @@
 {
-  "name": "@bemedev///TODO",
+  "name": "@bemedev/blockchain",
   "version": "0.0.1",
-  "description": "//TODO",
+  "description": "Blockchain to sell",
   "author": {
     "email": "bri_lvi@icloud.com",
     "name": "chlbri",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "//TODO"
+    "url": "https://github.com/chlbri/blockchain.git"
   },
   "license": "MIT",
   "type": "module",
@@ -31,7 +31,10 @@
     }
   ],
   "keywords": [
-    "//TODO"
+    "blockchain",
+    "smart contracts",
+    "web3",
+    "sales"
   ],
   "files": [
     "lib",
