@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "path": ".bemedev",
+  "path": "bemedev",
   "files": [
     "globals.types",
     "features.arrays.types",
@@ -15,6 +15,9 @@
     "features.strings.types",
     "features.transform.constants",
     "features.transform.types",
-    "features.objects.utils.types"
+    "features.objects.utils.types",
+    "features.numbers.overload.index",
+    "features.numbers.overload.percent",
+    "features.numbers.overload.percentS"
   ]
 }

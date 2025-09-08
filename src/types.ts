@@ -1,3 +1,5 @@
+import type { NOmit } from '#bemedev/globals/types';
+
 export * as b_types from '#bemedev/globals/types';
 
 export type On = 'mine' | 'all';
@@ -11,7 +13,5 @@ export type SmartContract = {
   percent: number;
   currency: string;
   description?: string;
-  precedents?: SmartContract[];
+  precedents?: NOmit<SmartContract, 'amount' | 'currency'>[];
 };
-
-export const D = 10;
