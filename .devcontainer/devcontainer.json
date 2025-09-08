@@ -1,6 +1,6 @@
 {
   "name": "Node.js with pnpm",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:lts",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
