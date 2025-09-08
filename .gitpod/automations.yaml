@@ -1,0 +1,14 @@
+tasks:
+  install-pnpm:
+    name: Install pnpm
+    command: npm install -g pnpm
+    triggeredBy:
+      - postDevcontainerStart
+  
+  install-dependencies:
+    name: Install dependencies with pnpm
+    command: pnpm install
+    dependsOn: ['install-pnpm']
+    triggeredBy:
+      - postDevcontainerStart
+      - manual
