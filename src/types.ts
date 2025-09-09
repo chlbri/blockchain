@@ -1,17 +1,39 @@
-import type { NOmit } from '#bemedev/globals/types';
-
-export * as b_types from '#bemedev/globals/types';
-
-export type On = 'mine' | 'all';
-
-export type SmartContract = {
-  address: string;
-  on: On;
+// An intermediary in the chain
+export interface Intermediary {
   id: string;
-  userId?: string;
-  amount: number;
-  percent: number;
+  name: string;
+  // TODO:  to define
+  wallet: string;
+}
+
+// Commission type
+export type CommissionType =
+  | { mode: 'fixed'; amount: number }
+  | { mode: 'percentage'; percentage: number };
+
+// Commission procedure defined by the first intermediary
+export interface CommissionProcedure {
+  type: CommissionType;
+  // Distribution formula: array of percentages or custom function
+  distribution: (
+    total: number,
+    ...intermediaries: readonly Intermediary[]
+  ) => number[];
+}
+
+// An asset for sale
+export interface Asset {
+  id: string;
+  description: string;
+  value: number;
   currency: string;
-  description?: string;
-  precedents?: NOmit<SmartContract, 'amount' | 'currency'>[];
-};
+}
+
+// A sale transaction
+export interface Contract {
+  asset: Asset;
+  intermediaries: Intermediary[];
+  procedure: CommissionProcedure;
+  buyer: string;
+  date: Date;
+}
