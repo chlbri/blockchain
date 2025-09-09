@@ -6,6 +6,7 @@ type PhoneNumber = {
 
 // An intermediary in the chain
 
+// #region type Intermediary
 export type Intermediary = {
   id: string;
 
@@ -13,6 +14,7 @@ export type Intermediary = {
   wallet: string;
   sacrifice?: number;
   contacts: {
+    // At least one phone number
     phoneNumbers: [PhoneNumber, ...PhoneNumber[]];
     emails?: string[];
     socials?: Record<string, string>;
@@ -33,8 +35,8 @@ export type Intermediary = {
       registrationNumber: string;
     }
 );
+// #endregion
 
-// Commission type
 export type CommissionType =
   | { mode: 'fixed'; amount: number }
   | { mode: 'percentage'; percentage: number };
@@ -55,7 +57,7 @@ export type Asset = {
   currency: string;
 };
 
-// A sale transaction
+// A contract transaction
 export type Contract = {
   asset: Asset;
   intermediaries: Intermediary[];

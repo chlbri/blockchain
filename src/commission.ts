@@ -14,17 +14,15 @@ const calculateTotalCommission = (sale: Contract): number => {
 // Distribute the total commission among the intermediaries
 const distributeCommission = (sale: Contract, total: number) => {
   const { intermediaries, procedure } = sale;
-  const numberOfIntermediaries = intermediaries.length;
+  const len = intermediaries.length;
 
   // Find the appropriate repartition based on number of intermediaries
   const repartition = procedure.repartitions.find(
-    rep => rep.length === numberOfIntermediaries,
+    ({ length }) => length === len,
   );
 
   if (!repartition) {
-    throw new Error(
-      `No repartition found for ${numberOfIntermediaries} intermediaries`,
-    );
+    throw new Error(`No repartition found for ${len} intermediaries`);
   }
 
   let sacrifice = 0;
