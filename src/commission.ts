@@ -1,3 +1,4 @@
+import '#bemedev/features/numbers/overload/percent';
 import type { Contract, Intermediary } from './types';
 
 // Calculate the total commission according to the procedure
@@ -38,7 +39,7 @@ const distributeCommission = (sale: Contract, total: number) => {
     const percentage = repartition[index];
     out.push({
       intermediary,
-      amount: (total * percentage) / 100 + sacrifice,
+      amount: total * percentage.percent + sacrifice,
     });
     sacrifice = intermediary.sacrifice || 0;
   });
