@@ -20,7 +20,7 @@
  * This file is auto-generated. Do not edit manually.
  */
    export type _AllPaths = {
-    formMachine: '/' | '/idle' | '/working';
+    machine: '/' | '/idle' | '/working' | '/working/stable' | '/working/submitting';
   }
    /**
    * 
@@ -44,15 +44,24 @@
    * NB: This file is auto-generated. Do not edit manually.
    */
     export const SCHEMAS = {
-   formMachine: {
+   machine: {
         __tsSchema: undefined as unknown as {
-      readonly targets: Exclude<_AllPaths['formMachine'], '/'>;
+      readonly targets: Exclude<_AllPaths['machine'], '/'>;
       readonly states: {
         readonly idle: {
-      readonly targets: Exclude<_AllPaths['formMachine'], '/idle'>;
+      readonly targets: Exclude<_AllPaths['machine'], '/idle'>;
     };
    readonly working: {
-      readonly targets: Exclude<_AllPaths['formMachine'], '/working'>;
+      readonly targets: Exclude<_AllPaths['machine'], '/working'>;
+      readonly states: {
+        readonly stable: {
+      readonly targets: Exclude<_AllPaths['machine'], '/working/stable'>;
+    };
+   readonly submitting: {
+      readonly targets: Exclude<_AllPaths['machine'], '/working/submitting'>;
+    };
+      };
+      readonly initial: 'stable' | 'submitting';
     };
       };
       readonly initial: 'idle' | 'working';

@@ -5,21 +5,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#cn/components/ui/select';
-import type { Component } from 'solid-js';
+import type { Accessor, Component } from 'solid-js';
 
 export const Currency: Component<{
   currencies: string[];
-  current: string;
+  current: Accessor<string>;
   setCurrent: (value?: string | null) => void;
-  error?: string;
-}> = ({ currencies, current, setCurrent, error }) => (
+}> = ({ currencies, current, setCurrent }) => (
   <div>
     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       Devise *
     </label>
     <Select
       onChange={setCurrent}
-      value={current}
+      value={current()}
       defaultValue="USD"
       options={currencies}
       placeholder="Sélectionner une devise"
@@ -43,6 +42,5 @@ export const Currency: Component<{
       </SelectTrigger>
       <SelectContent />
     </Select>
-    {error && <p class="text-red-600 text-sm mt-1">{error}</p>}
   </div>
 );

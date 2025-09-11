@@ -1,9 +1,8 @@
-import type { Asset } from '#types';
 import { createFileRoute } from '@tanstack/solid-router';
-import { createSignal } from 'solid-js';
-import { createStore } from 'solid-js/store';
 import { Currency } from './-components/Currency';
 import { Medias } from './-components/Medias';
+import { useHooks } from './-hooks';
+import { start } from './-services/form';
 
 export const Route = createFileRoute('/assets/create')({
   component: CreateAsset,
@@ -24,102 +23,9 @@ const currencies = [
 ];
 
 function CreateAsset() {
-  const [formData, setFormData] = createStore<Asset>({
-    id: '',
-    description: '',
-    value: 0,
-    currency: 'EUR',
-    medias: {
-      photos: [],
-      videos: [],
-      documents: [],
-    },
-  });
+  start();
 
-  const [errors, setErrors] = createStore<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = createSignal(false);
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.id.trim()) {
-      newErrors.id = "L'ID est requis";
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = 'La description est requise';
-    }
-
-    if (formData.value <= 0) {
-      newErrors.value = 'La valeur doit être positive';
-    }
-
-    if (!formData.currency) {
-      newErrors.currency = 'La devise est requise';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const asset: Asset = {
-        ...formData,
-      };
-
-      console.log('Asset créé:', asset);
-
-      // Reset form
-      setFormData({
-        id: '',
-        description: '',
-        value: 0,
-        currency: 'EUR',
-        medias: {
-          photos: [],
-          videos: [],
-          documents: [],
-        },
-      });
-
-      alert('Asset créé avec succès !');
-    } catch (error) {
-      console.error('Erreur lors de la création:', error);
-      alert("Erreur lors de la création de l'asset");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const addMediaItem = (
-    type: 'photos' | 'videos' | 'documents',
-    value: string,
-  ) => {
-    if (value.trim()) {
-      setFormData('medias', type, (prev = []) => [...prev, value.trim()]);
-    }
-  };
-
-  const removeMediaItem = (
-    type: 'photos' | 'videos' | 'documents',
-    index: number,
-  ) => {
-    setFormData('medias', type, (prev = []) =>
-      prev.filter((_: string, i: number) => i !== index),
-    );
-  };
+  const { send, select, handleSubmit, submitting } = useHooks();
 
   return (
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
@@ -137,24 +43,32 @@ function CreateAsset() {
 
           <form onSubmit={handleSubmit} class="space-y-6">
             {/* ID Field */}
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                ID de l'asset *
+            <div class="flex justify-evenly items-center">
+              <button
+                onClick={() => send('UPDATE_ID')}
+                type="button"
+                class="items-center p-1 text-blue-600 hover:text-blue-800 font-medium rounded-full transition-all duration-200 active:scale-95 shadow-xl cursor-pointer border-2 border-slate-200"
+              >
+                <svg
+                  class="size-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
+              <label>
+                ID de l'Asset :{' '}
+                <span class="font-mono text-sm text-gray-500 dark:text-gray-400">
+                  {select('context.id')()}
+                </span>
               </label>
-              <input
-                type="text"
-                value={formData.id}
-                onInput={e => setFormData('id', e.currentTarget.value)}
-                placeholder="asset-001"
-                class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                  errors.id
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 focus:border-blue-500'
-                }`}
-              />
-              {errors.id && (
-                <p class="mt-1 text-sm text-red-500">{errors.id}</p>
-              )}
             </div>
 
             {/* Description Field */}
@@ -163,23 +77,17 @@ function CreateAsset() {
                 Description *
               </label>
               <textarea
-                value={formData.description}
+                value={select('context.description')()}
                 onInput={e =>
-                  setFormData('description', e.currentTarget.value)
+                  send({
+                    type: 'UPDATE_DESCRIPTION',
+                    payload: { description: e.currentTarget.value },
+                  })
                 }
                 placeholder="Description détaillée de l'asset..."
                 rows={4}
-                class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-vertical ${
-                  errors.description
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 focus:border-blue-500'
-                }`}
+                class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-vertical `}
               />
-              {errors.description && (
-                <p class="mt-1 text-sm text-red-500">
-                  {errors.description}
-                </p>
-              )}
             </div>
 
             {/* Value and Currency Fields */}
@@ -190,33 +98,41 @@ function CreateAsset() {
                 </label>
                 <input
                   type="number"
-                  min={1000}
+                  min={0}
                   step={10}
-                  value={formData.value}
+                  value={select('context.value')()}
                   onInput={e =>
-                    setFormData(
-                      'value',
-                      parseFloat(e.currentTarget.value) || 0,
-                    )
+                    send({
+                      type: 'UPDATE_VALUE',
+                      payload: {
+                        value: parseFloat(e.currentTarget.value) || 0,
+                      },
+                    })
                   }
                   placeholder="10000"
                   class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-10`}
                   classList={{
-                    'border-red-500 focus:ring-red-500': !!errors.value,
+                    'border-red-500 focus:ring-red-500': !!select(
+                      'context.errors.value',
+                    )(),
                   }}
                 />
-                {errors.value && (
-                  <p class="mt-1 text-sm text-red-500">{errors.value}</p>
+                {select('context.errors.value')() && (
+                  <p class="mt-1 text-sm text-red-500">
+                    {select('context.errors.value')()}
+                  </p>
                 )}
               </div>
 
               <Currency
                 currencies={currencies}
-                current={formData.currency}
+                current={select('context.currency')}
                 setCurrent={value =>
-                  value && setFormData('currency', value)
+                  send({
+                    type: 'UPDATE_CURRENCY',
+                    payload: { currency: value ?? 'EUR' },
+                  })
                 }
-                error={errors.currency}
               />
             </div>
 
@@ -229,27 +145,57 @@ function CreateAsset() {
               {/* Photos */}
               <Medias
                 title="Photos"
-                items={formData.medias.photos}
-                onAdd={value => addMediaItem('photos', value)}
-                onRemove={index => removeMediaItem('photos', index)}
+                items={select('context.medias.photos')()}
+                onAdd={value =>
+                  send({
+                    type: 'MEDIA_ADD',
+                    payload: { type: 'photos', value },
+                  })
+                }
+                onRemove={index =>
+                  send({
+                    type: 'MEDIA_REMOVE',
+                    payload: { type: 'photos', index },
+                  })
+                }
                 placeholder="URL de la photo"
               />
 
               {/* Videos */}
               <Medias
                 title="Vidéos"
-                items={formData.medias.videos}
-                onAdd={value => addMediaItem('videos', value)}
-                onRemove={index => removeMediaItem('videos', index)}
+                items={select('context.medias.videos')()}
+                onAdd={value =>
+                  send({
+                    type: 'MEDIA_ADD',
+                    payload: { type: 'videos', value },
+                  })
+                }
+                onRemove={index =>
+                  send({
+                    type: 'MEDIA_REMOVE',
+                    payload: { type: 'videos', index },
+                  })
+                }
                 placeholder="URL de la vidéo"
               />
 
               {/* Documents */}
               <Medias
                 title="Documents"
-                items={formData.medias.documents}
-                onAdd={value => addMediaItem('documents', value)}
-                onRemove={index => removeMediaItem('documents', index)}
+                items={select('context.medias.documents')()}
+                onAdd={value =>
+                  send({
+                    type: 'MEDIA_ADD',
+                    payload: { type: 'documents', value },
+                  })
+                }
+                onRemove={index =>
+                  send({
+                    type: 'MEDIA_REMOVE',
+                    payload: { type: 'documents', index },
+                  })
+                }
                 placeholder="URL du document"
               />
             </div>
@@ -258,24 +204,15 @@ function CreateAsset() {
             <div class="flex gap-4 pt-6">
               <button
                 type="submit"
-                disabled={isSubmitting()}
+                disabled={submitting()}
                 class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed"
               >
-                {isSubmitting() ? 'Création...' : "Créer l'Asset"}
+                {submitting() ? 'Création...' : "Créer l'Asset"}
               </button>
 
               <button
                 type="button"
-                onClick={() => {
-                  setFormData({
-                    id: '',
-                    description: '',
-                    value: 0,
-                    currency: 'EUR',
-                    medias: { photos: [], videos: [], documents: [] },
-                  });
-                  setErrors({});
-                }}
+                onClick={() => send('RESET')}
                 class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
               >
                 Réinitialiser
