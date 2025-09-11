@@ -52,7 +52,6 @@
     "prepublishOnly": "",
     "prepare": "husky",
     "pretest": "pnpm run build",
-    "posttest": "pnpm run size",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "p-q": "pretty-quick",
     "rinit": "pnpm run rm && pnpm run config",
