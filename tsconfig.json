@@ -14,18 +14,24 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "moduleResolution": "Bundler",
     "types": ["vitest/globals"],
-    "jsx": "react",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "noEmit": true,
     "declarationMap": true,
     "paths": {
       "#bemedev/*": ["src/bemedev/*"],
-      "#types": ["src/features/blockchain/back/types.ts"]
+      "#types": ["src/features/blockchain/back/types.ts"],
+      "#cn/*": ["src/globals/front/cn/*"],
+      "#cn-comp/*": ["src/globals/front/cn/components/ui/*"],
+      "#seo": ["src/globals/front/helpers/seo/index.ts"],
+      "#styles/*": ["src/globals/front/styles/*"]
     },
     "baseUrl": "."
   }

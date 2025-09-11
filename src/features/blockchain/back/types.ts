@@ -64,3 +64,5 @@ export type Contract = {
   procedure: CommissionProcedure;
   date: Date;
 };
+
+export * from '#bemedev/globals/types';
