@@ -21,9 +21,8 @@ const distributeCommission = (sale: Contract, total: number) => {
     ({ length }) => length === len,
   );
 
-  if (!repartition) {
+  if (!repartition)
     throw new Error(`No repartition found for ${len} intermediaries`);
-  }
 
   let nextSacrifice = 0;
 
