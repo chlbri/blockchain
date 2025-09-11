@@ -32,12 +32,14 @@ const distributeCommission = (sale: Contract, total: number) => {
     amount: number;
   }[] = [];
 
+  const len1 = len - 1;
   // Calculate distribution for each intermediary
   intermediaries.forEach((intermediary, index) => {
     const percentage = repartition[index];
+    const sacrifice2 = index === len1 ? 0 : intermediary.sacrifice || 0;
     out.push({
       intermediary,
-      amount: total * percentage.percent + sacrifice,
+      amount: total * percentage.percent + sacrifice - sacrifice2,
     });
     sacrifice = intermediary.sacrifice || 0;
   });
