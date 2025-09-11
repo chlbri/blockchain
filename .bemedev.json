@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "path": "bemedev",
+  "path": "globals/bemedev",
   "files": [
     "globals.types",
     "features.arrays.types",

@@ -65,4 +65,4 @@ export type Contract = {
   date: Date;
 };
 
-export * from '#bemedev/globals/types';
+export * from 'src/globals/bemedev/globals/types';

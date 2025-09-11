@@ -26,8 +26,9 @@
     "noEmit": true,
     "declarationMap": true,
     "paths": {
-      "#bemedev/*": ["src/bemedev/*"],
+      "#bemedev/*": ["src/globals/bemedev/*"],
       "#types": ["src/features/blockchain/back/types.ts"],
+      "#signals/*": ["src/globals/front/signals/*"],
       "#cn/*": ["src/globals/front/cn/*"],
       "#cn-comp/*": ["src/globals/front/cn/components/ui/*"],
       "#seo": ["src/globals/front/helpers/seo/index.ts"],
