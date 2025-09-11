@@ -1,4 +1,4 @@
-import 'src/globals/bemedev/features/numbers/overload/percent';
+import 'src/globals/libs/bemedev/features/numbers/overload/percent';
 import type { Contract, Intermediary } from './types';
 
 // Calculate the total commission according to the procedure

@@ -55,6 +55,11 @@ export type Asset = {
   description: string;
   value: number;
   currency: string;
+  media: {
+    photos?: string[];
+    videos?: string[];
+    documents?: string[];
+  };
 };
 
 // A contract transaction
@@ -65,4 +70,4 @@ export type Contract = {
   date: Date;
 };
 
-export * from 'src/globals/bemedev/globals/types';
+export * from 'src/globals/libs/bemedev/globals/types';
