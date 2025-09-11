@@ -62,6 +62,5 @@ export type Contract = {
   asset: Asset;
   intermediaries: Intermediary[];
   procedure: CommissionProcedure;
-  buyer: string;
   date: Date;
 };

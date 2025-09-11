@@ -25,7 +25,7 @@ const distributeCommission = (sale: Contract, total: number) => {
     throw new Error(`No repartition found for ${len} intermediaries`);
   }
 
-  let sacrifice = 0;
+  let nextSacrifice = 0;
 
   const out: {
     intermediary: Intermediary;
@@ -36,19 +36,24 @@ const distributeCommission = (sale: Contract, total: number) => {
   // Calculate distribution for each intermediary
   intermediaries.forEach((intermediary, index) => {
     const percentage = repartition[index];
-    const sacrifice2 = index === len1 ? 0 : intermediary.sacrifice || 0;
+    // The last intermediary does not give away their sacrifice
+    const currentSacrifice =
+      index === len1 ? 0 : intermediary.sacrifice || 0;
+
     out.push({
       intermediary,
-      amount: total * percentage.percent + sacrifice - sacrifice2,
+      amount:
+        total * percentage.percent + nextSacrifice - currentSacrifice,
     });
-    sacrifice = intermediary.sacrifice || 0;
+
+    nextSacrifice = currentSacrifice;
   });
 
   return out;
 };
 
-export const proceedSale = (sale: Contract) => {
-  const totalCommission = calculateTotalCommission(sale);
-  const distribution = distributeCommission(sale, totalCommission);
+export const dispatch = (contract: Contract) => {
+  const totalCommission = calculateTotalCommission(contract);
+  const distribution = distributeCommission(contract, totalCommission);
   return { totalCommission, distribution };
 };
