@@ -55,7 +55,7 @@ export type Asset = {
   description: string;
   value: number;
   currency: string;
-  media: {
+  medias: {
     photos?: string[];
     videos?: string[];
     documents?: string[];

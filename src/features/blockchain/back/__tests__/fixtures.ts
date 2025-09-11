@@ -6,7 +6,7 @@ export const mockAsset: Asset = {
   description: 'Test Asset',
   value: 10000,
   currency: 'EUR',
-  media: {
+  medias: {
     photos: ['photo1.jpg', 'photo2.jpg'],
     videos: ['video1.mp4'],
     documents: ['doc1.pdf'],

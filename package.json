@@ -63,6 +63,8 @@
     "size": "size-limit",
     "test": "pnpm run test:coverage --no-coverage",
     "test:coverage": "vitest run",
+    "typings": "app-typings generate",
+    "typings:watch": "pnpm run typings --watch",
     "test:watch": "vitest",
     "dev": "vite dev",
     "build": "vite build",
@@ -79,6 +81,7 @@
     }
   ],
   "devDependencies": {
+    "@bemedev/app-cli": "^0.1.7",
     "@bemedev/fsf": "^0.8.0",
     "@bemedev/rollup-config": "^0.2.1",
     "@bemedev/vitest-alias": "^0.0.3",
@@ -114,6 +117,7 @@
     ]
   },
   "dependencies": {
+    "@bemedev/app-ts": "^0.9.21",
     "@kobalte/core": "^0.13.11",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/solid-router": "^1.131.37",

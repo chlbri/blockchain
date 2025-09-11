@@ -2,26 +2,17 @@ import type { Asset } from '#types';
 import { createFileRoute } from '@tanstack/solid-router';
 import { createSignal } from 'solid-js';
 import { createStore } from 'solid-js/store';
+import { Currency } from './-components/Currency';
+import { Medias } from './-components/Medias';
 
 export const Route = createFileRoute('/assets/create')({
   component: CreateAsset,
 });
 
-type AssetFormData = {
-  id: string;
-  description: string;
-  value: number;
-  currency: string;
-  media: {
-    photos: string[];
-    videos: string[];
-    documents: string[];
-  };
-};
-
 const currencies = [
   'EUR',
   'USD',
+  'XOF',
   'GBP',
   'JPY',
   'CAD',
@@ -33,19 +24,19 @@ const currencies = [
 ];
 
 function CreateAsset() {
-  const [formData, setFormData] = createStore<AssetFormData>({
+  const [formData, setFormData] = createStore<Asset>({
     id: '',
     description: '',
     value: 0,
     currency: 'EUR',
-    media: {
+    medias: {
       photos: [],
       videos: [],
       documents: [],
     },
   });
 
-  const [errors, setErrors] = createSignal<Record<string, string>>({});
+  const [errors, setErrors] = createStore<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = createSignal(false);
 
   const validateForm = () => {
@@ -96,7 +87,7 @@ function CreateAsset() {
         description: '',
         value: 0,
         currency: 'EUR',
-        media: {
+        medias: {
           photos: [],
           videos: [],
           documents: [],
@@ -117,10 +108,7 @@ function CreateAsset() {
     value: string,
   ) => {
     if (value.trim()) {
-      setFormData('media', type, (prev: string[]) => [
-        ...prev,
-        value.trim(),
-      ]);
+      setFormData('medias', type, (prev = []) => [...prev, value.trim()]);
     }
   };
 
@@ -128,7 +116,7 @@ function CreateAsset() {
     type: 'photos' | 'videos' | 'documents',
     index: number,
   ) => {
-    setFormData('media', type, (prev: string[]) =>
+    setFormData('medias', type, (prev = []) =>
       prev.filter((_: string, i: number) => i !== index),
     );
   };
@@ -159,13 +147,13 @@ function CreateAsset() {
                 onInput={e => setFormData('id', e.currentTarget.value)}
                 placeholder="asset-001"
                 class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                  errors().id
+                  errors.id
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300 focus:border-blue-500'
                 }`}
               />
-              {errors().id && (
-                <p class="mt-1 text-sm text-red-500">{errors().id}</p>
+              {errors.id && (
+                <p class="mt-1 text-sm text-red-500">{errors.id}</p>
               )}
             </div>
 
@@ -182,28 +170,28 @@ function CreateAsset() {
                 placeholder="Description détaillée de l'asset..."
                 rows={4}
                 class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-vertical ${
-                  errors().description
+                  errors.description
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-gray-300 focus:border-blue-500'
                 }`}
               />
-              {errors().description && (
+              {errors.description && (
                 <p class="mt-1 text-sm text-red-500">
-                  {errors().description}
+                  {errors.description}
                 </p>
               )}
             </div>
 
             {/* Value and Currency Fields */}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+              <div class="h-full">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Valeur *
                 </label>
                 <input
                   type="number"
-                  min="0"
-                  step="0.01"
+                  min={1000}
+                  step={10}
                   value={formData.value}
                   onInput={e =>
                     setFormData(
@@ -212,42 +200,24 @@ function CreateAsset() {
                     )
                   }
                   placeholder="10000"
-                  class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    errors().value
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:border-blue-500'
-                  }`}
+                  class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-10`}
+                  classList={{
+                    'border-red-500 focus:ring-red-500': !!errors.value,
+                  }}
                 />
-                {errors().value && (
-                  <p class="mt-1 text-sm text-red-500">{errors().value}</p>
+                {errors.value && (
+                  <p class="mt-1 text-sm text-red-500">{errors.value}</p>
                 )}
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Devise *
-                </label>
-                <select
-                  value={formData.currency}
-                  onChange={e =>
-                    setFormData('currency', e.currentTarget.value)
-                  }
-                  class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
-                    errors().currency
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:border-blue-500'
-                  }`}
-                >
-                  {currencies.map(currency => (
-                    <option value={currency}>{currency}</option>
-                  ))}
-                </select>
-                {errors().currency && (
-                  <p class="mt-1 text-sm text-red-500">
-                    {errors().currency}
-                  </p>
-                )}
-              </div>
+              <Currency
+                currencies={currencies}
+                current={formData.currency}
+                setCurrent={value =>
+                  value && setFormData('currency', value)
+                }
+                error={errors.currency}
+              />
             </div>
 
             {/* Media Section */}
@@ -257,27 +227,27 @@ function CreateAsset() {
               </h3>
 
               {/* Photos */}
-              <MediaSection
+              <Medias
                 title="Photos"
-                items={formData.media.photos}
+                items={formData.medias.photos}
                 onAdd={value => addMediaItem('photos', value)}
                 onRemove={index => removeMediaItem('photos', index)}
                 placeholder="URL de la photo"
               />
 
               {/* Videos */}
-              <MediaSection
+              <Medias
                 title="Vidéos"
-                items={formData.media.videos}
+                items={formData.medias.videos}
                 onAdd={value => addMediaItem('videos', value)}
                 onRemove={index => removeMediaItem('videos', index)}
                 placeholder="URL de la vidéo"
               />
 
               {/* Documents */}
-              <MediaSection
+              <Medias
                 title="Documents"
-                items={formData.media.documents}
+                items={formData.medias.documents}
                 onAdd={value => addMediaItem('documents', value)}
                 onRemove={index => removeMediaItem('documents', index)}
                 placeholder="URL du document"
@@ -302,7 +272,7 @@ function CreateAsset() {
                     description: '',
                     value: 0,
                     currency: 'EUR',
-                    media: { photos: [], videos: [], documents: [] },
+                    medias: { photos: [], videos: [], documents: [] },
                   });
                   setErrors({});
                 }}
@@ -314,96 +284,6 @@ function CreateAsset() {
           </form>
         </div>
       </div>
-    </div>
-  );
-}
-
-type MediaSectionProps = {
-  title: string;
-  items: string[];
-  onAdd: (value: string) => void;
-  onRemove: (index: number) => void;
-  placeholder: string;
-};
-
-function MediaSection(props: MediaSectionProps) {
-  const [newItem, setNewItem] = createSignal('');
-
-  const handleAdd = () => {
-    const value = newItem().trim();
-    if (value) {
-      props.onAdd(value);
-      setNewItem('');
-    }
-  };
-
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAdd();
-    }
-  };
-
-  return (
-    <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-      <h4 class="font-medium text-gray-900 dark:text-white mb-3">
-        {props.title}
-      </h4>
-
-      <div class="flex gap-2 mb-3">
-        <input
-          type="url"
-          value={newItem()}
-          onInput={e => setNewItem(e.currentTarget.value)}
-          onKeyPress={handleKeyPress}
-          placeholder={props.placeholder}
-          class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-        />
-        <button
-          type="button"
-          onClick={handleAdd}
-          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200"
-        >
-          Ajouter
-        </button>
-      </div>
-
-      {props.items.length > 0 && (
-        <div class="space-y-2">
-          {props.items.map((item, index) => (
-            <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded">
-              <span class="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">
-                {item}
-              </span>
-              <button
-                type="button"
-                onClick={() => props.onRemove(index)}
-                class="text-red-500 hover:text-red-700 p-1"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {props.items.length === 0 && (
-        <p class="text-sm text-gray-500 dark:text-gray-400 italic">
-          Aucun {props.title.toLowerCase()} ajouté
-        </p>
-      )}
     </div>
   );
 }
