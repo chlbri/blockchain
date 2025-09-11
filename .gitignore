@@ -144,3 +144,8 @@ build.npm.js
 
 #vitest
 tsconfig.vitest-temp.json
+
+#tanstack
+.tanstack
+
+
