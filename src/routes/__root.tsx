@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+import HeadLinks from '#components/organisms/HeadLinks';
+import { DefaultCatchBoundary } from '#components/pages/DefaultCatchBoundary';
+import { NotFound } from '#components/pages/NotFound';
 import appCss from '#styles/app.css?url';
 import { createRootRoute, Outlet } from '@tanstack/solid-router';
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools';
@@ -22,13 +25,16 @@ export const Route = createRootRoute({
       }),
     ],
   }),
-  component: () => {
+  errorComponent: DefaultCatchBoundary,
+  notFoundComponent: NotFound,
+  shellComponent: () => {
     return (
       <>
-        <main class="w-full min-h-full text-center">
+        <HeadLinks />
+        <main class='w-full min-h-full text-center'>
           <Outlet />
         </main>
-        <TanStackRouterDevtools position="bottom-left" />
+        <TanStackRouterDevtools position='bottom-left' />
       </>
     );
   },

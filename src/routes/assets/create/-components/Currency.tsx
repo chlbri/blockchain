@@ -13,29 +13,23 @@ export const Currency: Component<{
   setCurrent: (value?: string | null) => void;
 }> = ({ currencies, current, setCurrent }) => (
   <div>
-    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <label class='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
       Devise *
     </label>
     <Select
       onChange={setCurrent}
       value={current()}
-      defaultValue="USD"
+      defaultValue='USD'
       options={currencies}
-      placeholder="Sélectionner une devise"
+      placeholder='Sélectionner une devise'
       itemComponent={props => {
         return (
           <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
         );
       }}
-      class="h-10"
+      class='h-10'
     >
-      <SelectTrigger
-        class="h-10"
-        // classList={{
-        //   'border-red-500 focus-visible:ring-red-500':
-        //     !!errors().currency,
-        // }}
-      >
+      <SelectTrigger class='h-10'>
         <SelectValue<string>>
           {({ selectedOption }) => selectedOption()}
         </SelectValue>

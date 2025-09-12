@@ -1,3 +1,4 @@
+import { uniqueArray } from '#back/helpers';
 import sleep from '@bemedev/sleep';
 import {
   addOptions,
@@ -25,7 +26,7 @@ export const useHooks = () => {
     return !error;
   };
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = (e: Event) => {
     e.preventDefault();
     if (!validateAmount()) return;
     send('SUBMIT');
@@ -36,7 +37,7 @@ export const useHooks = () => {
     context,
     select,
     handleSubmit,
-    submitting: () => matches('working.submitting')(),
+    submitting: matches('working/submitting'),
   };
 };
 
@@ -44,7 +45,7 @@ export const displayNumberS = (num?: string, replacer = '.') => {
   if (!num) return '';
 
   let result = '';
-  for (let i = num.length - 1, count = 0; i >= 0; i--, count++) {
+  for (let i = 0, count = 0; i < num.length; i++, count++) {
     if (count > 0 && count % 3 === 0) {
       result = replacer + result;
     }
@@ -52,10 +53,6 @@ export const displayNumberS = (num?: string, replacer = '.') => {
   }
 
   return result;
-};
-
-export const uniqueArray = <T>(...arr: T[]): T[] => {
-  return Array.from(new Set(arr));
 };
 
 export const retrieveNumberS = (str: string, ...replacers: string[]) => {

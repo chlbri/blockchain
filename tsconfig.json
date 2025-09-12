@@ -27,6 +27,9 @@
     "declarationMap": true,
     "paths": {
       "#bemedev/*": ["src/globals/libs/bemedev/*"],
+      "#components/*": ["src/globals/front/components/*"],
+      "#from/*": ["src/globals/front/*"],
+      "#back/*": ["src/globals/back/*"],
       "#types": ["src/features/blockchain/back/types.ts"],
       "#signals/*": ["src/globals/front/signals/*"],
       "#cn/*": ["src/globals/front/cn/*"],
