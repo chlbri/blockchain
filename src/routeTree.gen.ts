@@ -10,53 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
-import { Route as AssetsCreateRouteRouteImport } from './routes/assets/create/route'
-import { Route as AssetsIndexRouteRouteImport } from './routes/assets/index/route'
+import { Route as ContractsCreateRouteRouteImport } from './routes/contracts/create/route'
+import { Route as ContractsIndexRouteRouteImport } from './routes/contracts/index/route'
 
 const IndexRouteRoute = IndexRouteRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AssetsCreateRouteRoute = AssetsCreateRouteRouteImport.update({
-  id: '/assets/create',
-  path: '/assets/create',
+const ContractsCreateRouteRoute = ContractsCreateRouteRouteImport.update({
+  id: '/contracts/create',
+  path: '/contracts/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AssetsIndexRouteRoute = AssetsIndexRouteRouteImport.update({
-  id: '/assets/',
-  path: '/assets/',
+const ContractsIndexRouteRoute = ContractsIndexRouteRouteImport.update({
+  id: '/contracts/',
+  path: '/contracts/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
-  '/assets': typeof AssetsIndexRouteRoute
-  '/assets/create': typeof AssetsCreateRouteRoute
+  '/contracts': typeof ContractsIndexRouteRoute
+  '/contracts/create': typeof ContractsCreateRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
-  '/assets': typeof AssetsIndexRouteRoute
-  '/assets/create': typeof AssetsCreateRouteRoute
+  '/contracts': typeof ContractsIndexRouteRoute
+  '/contracts/create': typeof ContractsCreateRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
-  '/assets/': typeof AssetsIndexRouteRoute
-  '/assets/create': typeof AssetsCreateRouteRoute
+  '/contracts/': typeof ContractsIndexRouteRoute
+  '/contracts/create': typeof ContractsCreateRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/assets' | '/assets/create'
+  fullPaths: '/' | '/contracts' | '/contracts/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/assets' | '/assets/create'
-  id: '__root__' | '/' | '/assets/' | '/assets/create'
+  to: '/' | '/contracts' | '/contracts/create'
+  id: '__root__' | '/' | '/contracts/' | '/contracts/create'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
-  AssetsIndexRouteRoute: typeof AssetsIndexRouteRoute
-  AssetsCreateRouteRoute: typeof AssetsCreateRouteRoute
+  ContractsIndexRouteRoute: typeof ContractsIndexRouteRoute
+  ContractsCreateRouteRoute: typeof ContractsCreateRouteRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -68,18 +68,18 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/assets/create': {
-      id: '/assets/create'
-      path: '/assets/create'
-      fullPath: '/assets/create'
-      preLoaderRoute: typeof AssetsCreateRouteRouteImport
+    '/contracts/create': {
+      id: '/contracts/create'
+      path: '/contracts/create'
+      fullPath: '/contracts/create'
+      preLoaderRoute: typeof ContractsCreateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/assets/': {
-      id: '/assets/'
-      path: '/assets'
-      fullPath: '/assets'
-      preLoaderRoute: typeof AssetsIndexRouteRouteImport
+    '/contracts/': {
+      id: '/contracts/'
+      path: '/contracts'
+      fullPath: '/contracts'
+      preLoaderRoute: typeof ContractsIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -87,8 +87,8 @@ declare module '@tanstack/solid-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
-  AssetsIndexRouteRoute: AssetsIndexRouteRoute,
-  AssetsCreateRouteRoute: AssetsCreateRouteRoute,
+  ContractsIndexRouteRoute: ContractsIndexRouteRoute,
+  ContractsCreateRouteRoute: ContractsCreateRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

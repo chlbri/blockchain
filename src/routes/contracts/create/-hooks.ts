@@ -1,5 +1,6 @@
 import { uniqueArray } from '#back/helpers';
 import sleep from '@bemedev/sleep';
+import ls from 'localstorage-slim';
 import {
   addOptions,
   context,
@@ -7,17 +8,38 @@ import {
   select,
   send,
 } from './-services/form';
+import { CONTRACTS_STORAGE_KEY } from './-services/form/constants';
 
 export const useHooks = () => {
   addOptions(() => ({
     promises: {
-      // #region Simulate API call
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      submit: async ({ context: { errors, ...context } }) => {
-        await sleep(1000);
-        console.log('Asset créé:', context);
+      submit: async ({ context: { errors, id, ...asset } }) => {
+        console.log('EXEC');
+        if (!asset.value || asset.value === '0') {
+          throw new Error('Invalid value');
+        }
+
+        await sleep(100);
+
+        console.log('Asset créé:', { ...asset, id });
+
+        // #region Store asset in localStorage using localstorage-slim
+        const all = ls.get(CONTRACTS_STORAGE_KEY) ?? {};
+
+        ls.set(CONTRACTS_STORAGE_KEY, {
+          ...all,
+          [id!]: asset,
+        });
+
+        console.log(
+          'New Asset stored in localStorage inside:',
+          CONTRACTS_STORAGE_KEY,
+        );
+        // #endregion
+
+        await sleep(100);
       },
-      // #endregion
     },
   }));
 
@@ -32,6 +54,8 @@ export const useHooks = () => {
     send('SUBMIT');
   };
 
+  // onCleanup(pause);
+
   return {
     send,
     context,
@@ -43,13 +67,13 @@ export const useHooks = () => {
 
 export const displayNumberS = (num?: string, replacer = '.') => {
   if (!num) return '';
+  const len = num.length;
 
   let result = '';
-  for (let i = 0, count = 0; i < num.length; i++, count++) {
-    if (count > 0 && count % 3 === 0) {
-      result = replacer + result;
-    }
-    result = num[i] + result;
+  for (let i = 0; i < len; i++) {
+    result += num[i];
+    const check = (len - i - 1) % 3 === 0 && i < len - 1;
+    if (check) result += replacer;
   }
 
   return result;

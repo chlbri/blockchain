@@ -6,7 +6,9 @@ import { NotFound } from '#components/pages/NotFound';
 import appCss from '#styles/app.css?url';
 import { createRootRoute, Outlet } from '@tanstack/solid-router';
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools';
+import { onCleanup } from 'solid-js';
 import seo from 'src/globals/front/helpers/seo';
+import { stop } from './contracts/create/-services/form';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -28,6 +30,7 @@ export const Route = createRootRoute({
   errorComponent: DefaultCatchBoundary,
   notFoundComponent: NotFound,
   shellComponent: () => {
+    onCleanup(stop);
     return (
       <>
         <HeadLinks />

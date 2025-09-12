@@ -7,3 +7,14 @@ export const DEFAULT_REPARTITIONS = [
   [20, 15, 15, 15, 15, 20], // 6 intermediaries
   [17, 13, 13, 13, 13, 13, 18], // 7 intermediaries
 ];
+
+export const CURRENCIES = [
+  'XOF (Francs CFA)',
+  'EUR',
+  'USD',
+  'GBP',
+  'JPY',
+  'CAD',
+  'AUD',
+  'CHF',
+];

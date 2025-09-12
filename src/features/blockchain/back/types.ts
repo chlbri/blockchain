@@ -4,6 +4,8 @@ type PhoneNumber = {
   network?: string;
 };
 
+export type Personality = 'individual' | 'company';
+
 // An intermediary in the chain
 
 // #region type Intermediary
@@ -59,6 +61,16 @@ export type Asset = {
     photos?: string[];
     videos?: string[];
     documents?: string[];
+  };
+  location?: {
+    address?: string;
+    city?: string;
+    country?: string;
+    coordinates?: {
+      lat: number;
+      lng: number;
+    };
+    googleMapsLink?: string;
   };
 };
 

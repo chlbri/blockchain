@@ -1,6 +1,10 @@
 import type { Asset } from '#types';
-import { createFileRoute } from '@tanstack/solid-router';
-import { createSignal, For } from 'solid-js';
+import { createFileRoute, Link } from '@tanstack/solid-router';
+import ls from 'localstorage-slim';
+
+import { CURRENCIES } from '#features/blockchain/back';
+import { createSignal, For, onMount } from 'solid-js';
+import { CONTRACTS_STORAGE_KEY } from '../create/-services/form/constants';
 
 // Local implementation of displayNumber
 const displayNumber = (num: string) => {
@@ -23,7 +27,7 @@ const displayNumber = (num: string) => {
   return decimal ? `${result},${decimal}` : result;
 };
 
-export const Route = createFileRoute('/assets/')({
+export const Route = createFileRoute('/contracts/')({
   component: AssetsPage,
 });
 
@@ -31,9 +35,9 @@ export const Route = createFileRoute('/assets/')({
 const mockAssets: Asset[] = [
   {
     id: 'asset-001',
-    description: 'Appartement T3 centre-ville Lyon',
-    value: 250000,
-    currency: 'EUR',
+    description: 'Appartement T3 centre-ville Abidjan',
+    value: 2500000,
+    currency: CURRENCIES[0],
     medias: {
       photos: [
         'https://example.com/photo1.jpg',
@@ -45,9 +49,9 @@ const mockAssets: Asset[] = [
   },
   {
     id: 'asset-002',
-    description: 'Bureau commercial Paris 15ème',
-    value: 1500000,
-    currency: 'EUR',
+    description: 'Bureau commercial Grand-Bassam',
+    value: 150000000,
+    currency: CURRENCIES[0],
     medias: {
       photos: ['https://example.com/office.jpg'],
       videos: [],
@@ -56,9 +60,9 @@ const mockAssets: Asset[] = [
   },
   {
     id: 'asset-003',
-    description: 'Terrain constructible Bordeaux',
-    value: 75000,
-    currency: 'EUR',
+    description: 'Terrain constructible Koumassi',
+    value: 75000000,
+    currency: CURRENCIES[0],
     medias: {
       photos: [],
       videos: [],
@@ -68,7 +72,7 @@ const mockAssets: Asset[] = [
 ];
 
 function AssetsPage() {
-  const [assets] = createSignal<Asset[]>(mockAssets);
+  const [assets, setAssets] = createSignal<Asset[]>(mockAssets);
   const [searchTerm, setSearchTerm] = createSignal('');
 
   const filteredAssets = () => {
@@ -80,6 +84,19 @@ function AssetsPage() {
         asset.currency.toLowerCase().includes(term),
     );
   };
+
+  onMount(() => {
+    const _storedAssets = ls.get(CONTRACTS_STORAGE_KEY) ?? {};
+    const storeAssets = Object.entries(_storedAssets).map(
+      ([id, asset]) => ({
+        id,
+        ...(asset as Omit<Asset, 'id'>),
+        value: Number(asset.value),
+      }),
+    );
+    if (storeAssets.length)
+      setAssets(current => [...current, ...storeAssets]);
+  });
 
   const totalValue = () => {
     return filteredAssets().reduce((sum, asset) => sum + asset.value, 0);
@@ -108,12 +125,12 @@ function AssetsPage() {
                   Gérez et consultez tous vos assets sur la blockchain
                 </p>
               </div>
-              <a
-                href='/assets/create'
+              <Link
+                to='/contracts/create'
                 class='bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200'
               >
                 Créer un Asset
-              </a>
+              </Link>
             </div>
 
             {/* Stats */}
@@ -232,12 +249,12 @@ function AssetsPage() {
                     ? 'Aucun asset ne correspond à votre recherche.'
                     : "Vous n'avez pas encore créé d'asset."}
                 </p>
-                <a
-                  href='/assets/create'
+                <Link
+                  to='/contracts/create'
                   class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200'
                 >
                   Créer votre premier Asset
-                </a>
+                </Link>
               </div>
             )}
           </div>

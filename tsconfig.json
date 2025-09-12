@@ -28,6 +28,8 @@
     "paths": {
       "#bemedev/*": ["src/globals/libs/bemedev/*"],
       "#components/*": ["src/globals/front/components/*"],
+      "#globals/*": ["src/globals/*"],
+      "#features/*": ["src/features/*"],
       "#from/*": ["src/globals/front/*"],
       "#back/*": ["src/globals/back/*"],
       "#types": ["src/features/blockchain/back/types.ts"],

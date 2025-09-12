@@ -2,7 +2,7 @@ import type { Asset } from '#types';
 import { createMachine, typings } from '@bemedev/app-ts';
 import { nanoid } from 'nanoid';
 import { SCHEMAS } from './-machine.machine.gen';
-import { DEFAULT_ASSET } from './constants';
+import { DEFAULT_CONTRACT } from './constants';
 
 type Media = keyof Asset['medias'];
 const type = typings.custom<Media>();
@@ -76,8 +76,8 @@ export const machine = createMachine(
           submitting: {
             promises: {
               src: 'submit',
-              then: { target: '/working/stable' },
-              catch: { target: '/idle' },
+              then: { target: '/idle' },
+              catch: { target: '/working/stable' },
               description: 'Submitting the asset form',
               max: 'MAX_DURATION',
             },
@@ -120,7 +120,7 @@ export const machine = createMachine(
 ).provideOptions(({ assign }) => ({
   actions: {
     reset: assign('context', () => ({
-      ...DEFAULT_ASSET,
+      ...DEFAULT_CONTRACT,
       id: nanoid(),
       errors: {},
     })),
