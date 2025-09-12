@@ -1,4 +1,3 @@
-import type { Asset } from '#types';
 import sleep from '@bemedev/sleep';
 import {
   addOptions,
@@ -7,13 +6,17 @@ import {
   select,
   send,
 } from './-services/form';
-import { DEFAULT_ASSET } from './-services/form/constants';
 
 export const useHooks = () => {
   addOptions(() => ({
     promises: {
-      // Simulate API call
-      submit: () => sleep(1000),
+      // #region Simulate API call
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      submit: async ({ context: { errors, ...context } }) => {
+        await sleep(1000);
+        console.log('Asset créé:', context);
+      },
+      // #endregion
     },
   }));
 
@@ -26,9 +29,6 @@ export const useHooks = () => {
     e.preventDefault();
     if (!validateAmount()) return;
     send('SUBMIT');
-    const asset: Asset = { ...DEFAULT_ASSET, ...context() };
-    console.log('Asset créé:', asset);
-    alert('Asset créé avec succès !');
   };
 
   return {
@@ -38,4 +38,27 @@ export const useHooks = () => {
     handleSubmit,
     submitting: () => matches('working.submitting')(),
   };
+};
+
+export const displayNumberS = (num?: string, replacer = '.') => {
+  if (!num) return '';
+
+  let result = '';
+  for (let i = num.length - 1, count = 0; i >= 0; i--, count++) {
+    if (count > 0 && count % 3 === 0) {
+      result = replacer + result;
+    }
+    result = num[i] + result;
+  }
+
+  return result;
+};
+
+export const uniqueArray = <T>(...arr: T[]): T[] => {
+  return Array.from(new Set(arr));
+};
+
+export const retrieveNumberS = (str: string, ...replacers: string[]) => {
+  const _replacers = uniqueArray(...replacers, '.');
+  return _replacers.reduce((s, r) => s.replaceAll(r, ''), str);
 };

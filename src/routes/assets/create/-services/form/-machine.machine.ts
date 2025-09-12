@@ -91,7 +91,7 @@ export const machine = createMachine(
     context: typings.partial({
       id: 'string',
       description: 'string',
-      value: 'number',
+      value: 'string',
       currency: 'string',
 
       medias: typings.partial({
@@ -108,7 +108,7 @@ export const machine = createMachine(
     eventsMap: {
       UPDATE_ID: 'primitive',
       UPDATE_DESCRIPTION: { description: 'string' },
-      UPDATE_VALUE: { value: 'number' },
+      UPDATE_VALUE: { value: 'string' },
       UPDATE_CURRENCY: typings.partial({ currency: 'string' }),
       MEDIA_ADD: { type, value: 'string' },
       MEDIA_REMOVE: { type, index: 'number' },
@@ -135,7 +135,10 @@ export const machine = createMachine(
     }),
     validateValue: assign('context.errors', ({ context }) => {
       const errors: Record<string, string> = { ...context.errors };
-      if (context.value! <= 0) {
+      const value = Number(
+        context.value?.replaceAll(',', '').replaceAll('.', ''),
+      );
+      if (value < 0) {
         errors.value = 'La valeur doit être un nombre positif';
       } else {
         delete errors.value;

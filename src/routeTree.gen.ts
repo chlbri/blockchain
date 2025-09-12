@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
 import { Route as AssetsCreateRouteRouteImport } from './routes/assets/create/route'
+import { Route as AssetsIndexRouteRouteImport } from './routes/assets/index/route'
 
 const IndexRouteRoute = IndexRouteRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const AssetsCreateRouteRoute = AssetsCreateRouteRouteImport.update({
   path: '/assets/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssetsIndexRouteRoute = AssetsIndexRouteRouteImport.update({
+  id: '/assets/',
+  path: '/assets/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
+  '/assets': typeof AssetsIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
+  '/assets': typeof AssetsIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
+  '/assets/': typeof AssetsIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/assets/create'
+  fullPaths: '/' | '/assets' | '/assets/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/assets/create'
-  id: '__root__' | '/' | '/assets/create'
+  to: '/' | '/assets' | '/assets/create'
+  id: '__root__' | '/' | '/assets/' | '/assets/create'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
+  AssetsIndexRouteRoute: typeof AssetsIndexRouteRoute
   AssetsCreateRouteRoute: typeof AssetsCreateRouteRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof AssetsCreateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assets/': {
+      id: '/assets/'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsIndexRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
+  AssetsIndexRouteRoute: AssetsIndexRouteRoute,
   AssetsCreateRouteRoute: AssetsCreateRouteRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/solid-router';
 import { Currency } from './-components/Currency';
 import { Medias } from './-components/Medias';
-import { useHooks } from './-hooks';
+import { displayNumberS, retrieveNumberS, useHooks } from './-hooks';
 import { start } from './-services/form';
 
 export const Route = createFileRoute('/assets/create')({
@@ -11,15 +11,12 @@ export const Route = createFileRoute('/assets/create')({
 const currencies = [
   'EUR',
   'USD',
-  'XOF',
+  'XOF (Francs CFA)',
   'GBP',
   'JPY',
   'CAD',
   'AUD',
   'CHF',
-  'CNY',
-  'BTC',
-  'ETH',
 ];
 
 function CreateAsset() {
@@ -47,10 +44,10 @@ function CreateAsset() {
               <button
                 onClick={() => send('UPDATE_ID')}
                 type="button"
-                class="items-center p-1 text-blue-600 hover:text-blue-800 font-medium rounded-full transition-all duration-200 active:scale-95 shadow-xl cursor-pointer border-2 border-slate-200"
+                class="bg-slate-50 hover:bg-slate-100 items-center p-1 text-blue-600 hover:text-blue-800 font-medium rounded-full transition-all duration-200 active:scale-90 shadow-xl active:shadow-md cursor-pointer border-2 border-slate-200 group"
               >
                 <svg
-                  class="size-8"
+                  class="size-8 group-active:rotate-180 transition-all duration-200 ease-in-out"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -58,7 +55,7 @@ function CreateAsset() {
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="3"
+                    stroke-width="2.5"
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
@@ -97,19 +94,24 @@ function CreateAsset() {
                   Valeur *
                 </label>
                 <input
-                  type="number"
+                  // type="number"
                   min={0}
-                  step={10}
-                  value={select('context.value')()}
-                  onInput={e =>
+                  value={displayNumberS(select('context.value')())}
+                  // onInput={e => {
+                  //   const value = retrieveNumberS(e.currentTarget.value);
+                  //   send({
+                  //     type: 'UPDATE_VALUE',
+                  //     payload: { value },
+                  //   });
+                  // }}
+                  onKeyPress={e => {
+                    const value = retrieveNumberS(e.currentTarget.value);
                     send({
                       type: 'UPDATE_VALUE',
-                      payload: {
-                        value: parseFloat(e.currentTarget.value) || 0,
-                      },
-                    })
-                  }
-                  placeholder="10000"
+                      payload: { value },
+                    });
+                  }}
+                  placeholder="10_000"
                   class={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-10`}
                   classList={{
                     'border-red-500 focus:ring-red-500': !!select(
