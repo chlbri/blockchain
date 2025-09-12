@@ -162,14 +162,17 @@ export const machine = createMachine(
       UPDATE_ID: 'primitive',
       RESET: 'primitive',
       UPDATE_WALLET: { wallet: 'string' },
-      UPDATE_SACRIFICE: { sacrifice: 'number' },
+      UPDATE_SACRIFICE: { sacrifice: 'string' },
       UPDATE_PERSONALITY: { personality: typings.custom<Personality>() },
       UPDATE_FIRST_NAME: { firstName: 'string' },
       UPDATE_LAST_NAME: { lastName: 'string' },
       UPDATE_NATIONAL_ID: { nationalID: 'string' },
       UPDATE_COMPANY_NAME: { companyName: 'string' },
       UPDATE_REGISTRATION_NUMBER: { registrationNumber: 'string' },
-      ADD_PHONE_NUMBER: {},
+      ADD_PHONE_NUMBER: {
+        countryCode: 'number',
+        number: 'number',
+      },
       UPDATE_PHONE_NUMBER: {
         index: 'number',
         phoneNumber: typings.partial({
@@ -183,7 +186,6 @@ export const machine = createMachine(
       REMOVE_EMAIL: { index: 'number' },
       ADD_SOCIAL: { platform: 'string', url: 'string' },
       UPDATE_SOCIAL: {
-        index: 'number',
         platform: 'string',
         url: 'string',
       },
@@ -198,7 +200,7 @@ export const machine = createMachine(
     context: typings.partial({
       id: 'string',
       wallet: 'string',
-      sacrifice: 'number',
+      sacrifice: 'string',
       personality: typings.custom<Personality>(),
       firstName: 'string',
       lastName: 'string',
@@ -223,12 +225,16 @@ export const machine = createMachine(
         companyName: 'string',
         registrationNumber: 'string',
         phoneNumbers: 'string',
+        email: 'string',
       }),
     }),
   }),
 ).provideOptions(({ assign }) => ({
   actions: {
-    reset: assign('context', () => DEFAULT_INTERMEDIARY),
+    reset: assign('context', () => ({
+      ...DEFAULT_INTERMEDIARY,
+      id: nanoid(),
+    })),
 
     updateId: assign('context.id', () => nanoid()),
 
@@ -236,176 +242,172 @@ export const machine = createMachine(
       UPDATE_WALLET: ({ payload }) => payload.wallet,
     }),
 
-    updateSacrifice: ({ context, event }: any) => ({
-      ...context,
-      sacrifice: event.payload.sacrifice,
+    updateSacrifice: assign('context.sacrifice', {
+      UPDATE_SACRIFICE: ({ payload }) => payload.sacrifice,
     }),
 
-    updatePersonality: ({ context, event }: any) => ({
-      ...context,
-      personality: event.payload.personality,
-      // Clear fields from the other personality type
-      ...(event.payload.personality === 'individual'
-        ? {
-            companyName: undefined,
-            registrationNumber: undefined,
-          }
-        : {
-            firstName: undefined,
-            lastName: undefined,
-            nationalID: undefined,
-          }),
+    updatePersonality: assign('context.personality', {
+      UPDATE_PERSONALITY: ({ payload }) => payload.personality,
     }),
 
-    updateFirstName: ({ context, event }: any) => ({
-      ...context,
-      firstName: event.payload.firstName,
+    updateFirstName: assign('context.firstName', {
+      UPDATE_FIRST_NAME: ({ payload }) => payload.firstName,
     }),
 
-    updateLastName: ({ context, event }: any) => ({
-      ...context,
-      lastName: event.payload.lastName,
+    updateLastName: assign('context.lastName', {
+      UPDATE_LAST_NAME: ({ payload }) => payload.lastName,
     }),
 
-    updateNationalId: ({ context, event }: any) => ({
-      ...context,
-      nationalID: event.payload.nationalID,
+    updateNationalId: assign('context.nationalID', {
+      UPDATE_NATIONAL_ID: ({ payload }) => payload.nationalID,
     }),
 
-    updateCompanyName: ({ context, event }: any) => ({
-      ...context,
-      companyName: event.payload.companyName,
+    updateCompanyName: assign('context.companyName', {
+      UPDATE_COMPANY_NAME: ({ payload }) => payload.companyName,
     }),
 
-    updateRegistrationNumber: ({ context, event }: any) => ({
-      ...context,
-      registrationNumber: event.payload.registrationNumber,
+    updateRegistrationNumber: assign('context.registrationNumber', {
+      UPDATE_REGISTRATION_NUMBER: ({ payload }) =>
+        payload.registrationNumber,
     }),
 
-    addPhoneNumber: ({ context }: any) => ({
-      ...context,
-      phoneNumbers: [
-        ...(context.phoneNumbers || []),
-        { countryCode: 33, number: 0 },
+    addPhoneNumber: assign('context.contacts.phoneNumbers', {
+      ADD_PHONE_NUMBER: ({ payload, context }) => [
+        ...(context.contacts?.phoneNumbers || []),
+        payload,
       ],
     }),
 
-    updatePhoneNumber: ({ context, event }: any) => ({
-      ...context,
-      phoneNumbers: (context.phoneNumbers || []).map(
-        (phone: any, index: number) =>
-          index === event.payload.index
-            ? { ...phone, ...event.payload.phoneNumber }
-            : phone,
-      ),
+    updatePhoneNumber: assign('context.contacts.phoneNumbers', {
+      UPDATE_PHONE_NUMBER: ({
+        payload: { index, phoneNumber },
+        context,
+      }) =>
+        context.contacts?.phoneNumbers?.map((phone, i) =>
+          i === index ? phoneNumber : phone,
+        ),
     }),
 
-    removePhoneNumber: ({ context, event }: any) => ({
-      ...context,
-      phoneNumbers: (context.phoneNumbers || []).filter(
-        (_: any, index: number) => index !== event.payload.index,
-      ),
+    removePhoneNumber: assign('context.contacts.phoneNumbers', {
+      REMOVE_PHONE_NUMBER: ({ payload, context }) =>
+        context.contacts?.phoneNumbers?.filter(
+          (_, index) => index !== payload.index,
+        ),
     }),
 
-    addEmail: ({ context, event }: any) => ({
-      ...context,
-      emails: [...(context.emails || []), event.payload.email],
+    addEmail: assign('context.contacts.emails', {
+      ADD_EMAIL: ({ payload, context }) => [
+        ...(context.contacts?.emails || []),
+        payload,
+      ],
     }),
 
-    updateEmail: ({ context, event }: any) => ({
-      ...context,
-      emails: (context.emails || []).map((email: string, index: number) =>
-        index === event.payload.index ? event.payload.email : email,
-      ),
+    updateEmail: assign('context.contacts.emails', {
+      UPDATE_EMAIL: ({ payload, context }) =>
+        context.contacts?.emails?.map((email, i) =>
+          i === payload.index ? payload.email : email,
+        ),
     }),
 
-    removeEmail: ({ context, event }: any) => ({
-      ...context,
-      emails: (context.emails || []).filter(
-        (_: string, index: number) => index !== event.payload.index,
-      ),
+    removeEmail: assign('context.contacts.emails', {
+      REMOVE_EMAIL: ({ payload, context }) =>
+        context.contacts?.emails?.filter(
+          (_, index) => index !== payload.index,
+        ),
     }),
 
-    addSocial: ({ context, event }: any) => ({
-      ...context,
-      socials: {
-        ...(context.socials || {}),
-        [event.payload.platform]: event.payload.url,
+    addSocial: assign('context.contacts.socials', {
+      ADD_SOCIAL: ({ payload, context }) => {
+        const _default = context.contacts?.socials || {};
+        return {
+          ..._default,
+          [payload.platform]: payload.url,
+        };
       },
     }),
 
-    updateSocial: ({ context, event }: any) => ({
-      ...context,
-      socials: {
-        ...(context.socials || {}),
-        [event.payload.platform]: event.payload.url,
+    updateSocial: assign('context.contacts.socials', {
+      UPDATE_SOCIAL: ({ payload, context }) => {
+        const _default = context.contacts?.socials || {};
+        return {
+          ..._default,
+          [payload.platform]: payload.url,
+        };
       },
     }),
 
-    removeSocial: ({ context, event }: any) => {
-      const socials = { ...(context.socials || {}) };
-      delete socials[event.payload.platform];
-      return {
-        ...context,
-        socials,
-      };
-    },
-
-    addWebsite: ({ context, event }: any) => ({
-      ...context,
-      websites: [...(context.websites || []), event.payload.website],
+    removeSocial: assign('context.contacts.socials', {
+      REMOVE_SOCIAL: ({ payload, context }) => {
+        const _default = context.contacts?.socials || {};
+        return {
+          ...(_default || {}),
+          [payload.platform]: undefined,
+        };
+      },
     }),
 
-    updateWebsite: ({ context, event }: any) => ({
-      ...context,
-      websites: (context.websites || []).map(
-        (website: string, index: number) =>
-          index === event.payload.index ? event.payload.website : website,
-      ),
+    addWebsite: assign('context.contacts.websites', {
+      ADD_WEBSITE: ({ payload, context }) => {
+        const _default = context.contacts?.websites || [];
+        return [..._default, payload.website];
+      },
     }),
 
-    removeWebsite: ({ context, event }: any) => ({
-      ...context,
-      websites: (context.websites || []).filter(
-        (_: string, index: number) => index !== event.payload.index,
-      ),
+    updateWebsite: assign('context.contacts.websites', {
+      UPDATE_WEBSITE: ({ payload, context }) =>
+        context.contacts?.websites?.map((website, index) =>
+          index === payload.index ? payload.website : website,
+        ),
     }),
 
-    validate: ({ context }: any) => {
+    removeWebsite: assign('context.contacts.websites', {
+      REMOVE_WEBSITE: ({ payload, context }) =>
+        context.contacts?.websites?.filter(
+          (_: string, index: number) => index !== payload.index,
+        ),
+    }),
+
+    validate: assign('context.errors', ({ context }) => {
       const errors: any = {};
 
-      if (!context.wallet?.trim()) {
-        errors.wallet = 'Le wallet est requis';
+      if (!context?.wallet) errors.wallet = 'Wallet is required';
+      if (!context?.personality)
+        errors.personality = 'Personality is required';
+
+      if (context.personality == 'individual') {
+        if (!context?.firstName)
+          errors.firstName = 'First Name is required';
       }
 
-      if (context.personality === 'individual') {
-        if (!context.lastName?.trim()) {
-          errors.lastName = 'Le nom de famille est requis';
-        }
-        if (!context.nationalID?.trim()) {
-          errors.nationalID = "Le numéro d'identité nationale est requis";
-        }
-      } else if (context.personality === 'company') {
-        if (!context.companyName?.trim()) {
-          errors.companyName = "Le nom de l'entreprise est requis";
-        }
-        if (!context.registrationNumber?.trim()) {
-          errors.registrationNumber =
-            "Le numéro d'enregistrement est requis";
-        }
+      if (context.personality == 'company') {
+        if (!context?.companyName)
+          errors.companyName = 'companyName is required';
+
+        if (!context.registrationNumber)
+          errors.registrationNumber = 'Registration Number is required';
+
+        //check at least one email
+        if (
+          !context?.contacts?.emails ||
+          context.contacts.emails.length < 1
+        )
+          errors.email = 'At least one email is required for company';
       }
 
+      if (!context?.nationalID)
+        errors.nationalID = 'National ID is required';
+
+      //check at least one phoneNumber
       if (
-        !context.phoneNumbers?.length ||
-        context.phoneNumbers[0].number === 0
-      ) {
-        errors.phoneNumbers = 'Au moins un numéro de téléphone est requis';
-      }
+        !context?.contacts?.phoneNumbers ||
+        context.contacts.phoneNumbers.length < 1
+      )
+        errors.phoneNumbers = 'At least one phone number is required';
 
-      return {
-        ...context,
-        errors,
-      };
-    },
+      return errors;
+    }),
+  },
+  delays: {
+    MAX_DURATION: 100_000,
   },
 }));

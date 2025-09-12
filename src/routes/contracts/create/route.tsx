@@ -4,9 +4,10 @@ import { For } from 'solid-js';
 import { CURRENCIES } from 'src/features/blockchain/back';
 import { Currency } from './-components/Currency';
 import { Medias } from './-components/Medias';
-import { ValueInput } from './-components/ValueInput';
 import { useHooks } from './-hooks';
 import { start } from './-services/form';
+import { AmountInput } from '#components/organisms/AmountInput';
+import { deepEqual } from 'fast-equals';
 
 export const Route = createFileRoute('/contracts/create')({
   component: () => {
@@ -38,7 +39,7 @@ export const Route = createFileRoute('/contracts/create')({
                 <label>
                   ID de l'Asset :{' '}
                   <span class='font-mono text-sm text-gray-500 dark:text-gray-400'>
-                    {select('context.id')()}
+                    {select('context.id', deepEqual)()}
                   </span>
                 </label>
               </div>
@@ -64,11 +65,24 @@ export const Route = createFileRoute('/contracts/create')({
 
               {/* Value and Currency Fields */}
               <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <ValueInput class='h-full' />
+                <AmountInput
+                  class='h-full'
+                  label='Valeur'
+                  required
+                  value={select('context.value', deepEqual)}
+                  onInput={value => {
+                    send({
+                      type: 'UPDATE_VALUE',
+                      payload: { value },
+                    });
+                  }}
+                  placeholder={() => '10_000'}
+                  error={select('context.errors.value')}
+                />
 
                 <Currency
                   currencies={CURRENCIES}
-                  current={select('context.currency')}
+                  current={select('context.currency', deepEqual)}
                   setCurrent={value =>
                     send({
                       type: 'UPDATE_CURRENCY',
@@ -88,7 +102,7 @@ export const Route = createFileRoute('/contracts/create')({
                   {type => (
                     <Medias
                       title={`${type.charAt(0).toUpperCase()}${type.slice(1)}`}
-                      items={select(`context.medias.${type}`)()}
+                      items={select(`context.medias.${type}`, deepEqual)()}
                       onAdd={value =>
                         send({
                           type: 'MEDIA_ADD',

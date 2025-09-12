@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
+import { Route as IntermediariesCreateRouteRouteImport } from './routes/intermediaries/create/route'
 import { Route as ContractsCreateRouteRouteImport } from './routes/contracts/create/route'
+import { Route as IntermediariesIndexRouteRouteImport } from './routes/intermediaries/index/route'
 import { Route as ContractsIndexRouteRouteImport } from './routes/contracts/index/route'
 
 const IndexRouteRoute = IndexRouteRouteImport.update({
@@ -18,11 +20,23 @@ const IndexRouteRoute = IndexRouteRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntermediariesCreateRouteRoute =
+  IntermediariesCreateRouteRouteImport.update({
+    id: '/intermediaries/create',
+    path: '/intermediaries/create',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContractsCreateRouteRoute = ContractsCreateRouteRouteImport.update({
   id: '/contracts/create',
   path: '/contracts/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntermediariesIndexRouteRoute =
+  IntermediariesIndexRouteRouteImport.update({
+    id: '/intermediaries/',
+    path: '/intermediaries/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContractsIndexRouteRoute = ContractsIndexRouteRouteImport.update({
   id: '/contracts/',
   path: '/contracts/',
@@ -32,31 +46,55 @@ const ContractsIndexRouteRoute = ContractsIndexRouteRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '/contracts': typeof ContractsIndexRouteRoute
+  '/intermediaries': typeof IntermediariesIndexRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
+  '/intermediaries/create': typeof IntermediariesCreateRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
   '/contracts': typeof ContractsIndexRouteRoute
+  '/intermediaries': typeof IntermediariesIndexRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
+  '/intermediaries/create': typeof IntermediariesCreateRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
   '/contracts/': typeof ContractsIndexRouteRoute
+  '/intermediaries/': typeof IntermediariesIndexRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
+  '/intermediaries/create': typeof IntermediariesCreateRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contracts' | '/contracts/create'
+  fullPaths:
+    | '/'
+    | '/contracts'
+    | '/intermediaries'
+    | '/contracts/create'
+    | '/intermediaries/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contracts' | '/contracts/create'
-  id: '__root__' | '/' | '/contracts/' | '/contracts/create'
+  to:
+    | '/'
+    | '/contracts'
+    | '/intermediaries'
+    | '/contracts/create'
+    | '/intermediaries/create'
+  id:
+    | '__root__'
+    | '/'
+    | '/contracts/'
+    | '/intermediaries/'
+    | '/contracts/create'
+    | '/intermediaries/create'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
   ContractsIndexRouteRoute: typeof ContractsIndexRouteRoute
+  IntermediariesIndexRouteRoute: typeof IntermediariesIndexRouteRoute
   ContractsCreateRouteRoute: typeof ContractsCreateRouteRoute
+  IntermediariesCreateRouteRoute: typeof IntermediariesCreateRouteRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -68,11 +106,25 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/intermediaries/create': {
+      id: '/intermediaries/create'
+      path: '/intermediaries/create'
+      fullPath: '/intermediaries/create'
+      preLoaderRoute: typeof IntermediariesCreateRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contracts/create': {
       id: '/contracts/create'
       path: '/contracts/create'
       fullPath: '/contracts/create'
       preLoaderRoute: typeof ContractsCreateRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intermediaries/': {
+      id: '/intermediaries/'
+      path: '/intermediaries'
+      fullPath: '/intermediaries'
+      preLoaderRoute: typeof IntermediariesIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contracts/': {
@@ -88,7 +140,9 @@ declare module '@tanstack/solid-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
   ContractsIndexRouteRoute: ContractsIndexRouteRoute,
+  IntermediariesIndexRouteRoute: IntermediariesIndexRouteRoute,
   ContractsCreateRouteRoute: ContractsCreateRouteRoute,
+  IntermediariesCreateRouteRoute: IntermediariesCreateRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

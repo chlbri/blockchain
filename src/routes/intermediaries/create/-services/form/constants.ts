@@ -1,6 +1,4 @@
-import type { Intermediary } from '#types';
-
-export const DEFAULT_INTERMEDIARY: Omit<Intermediary, 'id'> = {
+export const DEFAULT_INTERMEDIARY = {
   wallet: '',
   contacts: {
     phoneNumbers: [
@@ -9,13 +7,17 @@ export const DEFAULT_INTERMEDIARY: Omit<Intermediary, 'id'> = {
         number: 0,
       },
     ],
+    emails: [],
+    socials: {},
+    websites: [],
   },
-  personality: 'individual',
+  personality: 'individual' as const,
   nationalID: '',
-  name: {
-    firstName: '',
-    lastName: '',
-  },
-} as Omit<Intermediary, 'id'>;
+  firstName: '',
+  lastName: '',
+  companyName: '',
+  registrationNumber: '',
+  errors: {},
+};
 
 export const INTERMEDIARIES_STORAGE_KEY = 'intermediaries->';

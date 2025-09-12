@@ -1,13 +1,11 @@
 import sleep from '@bemedev/sleep';
 import ls from 'localstorage-slim';
-import { onCleanup } from 'solid-js';
 import {
   addOptions,
   context,
   matches,
   select,
   send,
-  stop,
 } from './-services/form';
 import { INTERMEDIARIES_STORAGE_KEY } from './-services/form/constants';
 
@@ -15,14 +13,15 @@ export const useHooks = () => {
   addOptions(() => ({
     promises: {
       submit: async ({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         context: { errors, id, ...intermediary },
-      }: any) => {
+      }) => {
         console.log('Intermediary creation started');
         if (!intermediary.wallet?.trim()) {
           throw new Error('Wallet is required');
         }
 
-        await sleep(1000);
+        await sleep(100);
         console.log('Intermediary créé:', { ...intermediary, id });
 
         // Store intermediary in localStorage using localstorage-slim
@@ -36,6 +35,8 @@ export const useHooks = () => {
           'Intermediary stored in localStorage inside:',
           INTERMEDIARIES_STORAGE_KEY,
         );
+
+        await sleep(100);
       },
     },
   }));
@@ -50,8 +51,6 @@ export const useHooks = () => {
     if (!validateForm()) return;
     send('SUBMIT');
   };
-
-  onCleanup(stop);
 
   return {
     send,
