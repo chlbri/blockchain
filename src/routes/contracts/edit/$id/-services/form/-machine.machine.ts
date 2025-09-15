@@ -1,9 +1,8 @@
-import { retrieveNumberS } from '#globals/front/helpers/numbers';
 import type { Asset } from '#types';
 import { createMachine, typings } from '@bemedev/app-ts';
-import { nanoid } from 'nanoid';
+import ls from 'localstorage-slim';
 import { SCHEMAS } from './-machine.machine.gen';
-import { DEFAULT_CONTRACT } from './constants';
+import { CONTRACTS_STORAGE_KEY, DEFAULT_CONTRACT } from './constants';
 
 type Media = keyof Asset['medias'];
 const type = typings.custom<Media>();
@@ -14,21 +13,20 @@ export const machine = createMachine(
     __tsSchema: SCHEMAS.machine.__tsSchema,
     states: {
       idle: {
-        always: {
-          target: '/working',
-          actions: 'reset',
-          description: 'Initialize form data',
+        on: {
+          SET_ID: {
+            actions: ['setId', 'build'],
+            description: 'Set the asset ID',
+            target: '/working',
+          },
         },
       },
       working: {
         on: {
-          UPDATE_ID: {
-            actions: 'updateId',
-            description: 'Generate a new ID',
-          },
-
           RESET: {
             actions: ['reset'],
+            target: '/idle',
+            description: 'Reset the form',
           },
 
           UPDATE_DESCRIPTION: {
@@ -78,7 +76,7 @@ export const machine = createMachine(
             promises: {
               src: 'submit',
               then: { target: '/idle' },
-              catch: { target: '/working/stable' },
+              catch: { target: '/idle' },
               description: 'Submitting the asset form',
               max: 'MAX_DURATION',
             },
@@ -107,6 +105,7 @@ export const machine = createMachine(
     }),
 
     eventsMap: {
+      SET_ID: { id: 'string' },
       UPDATE_ID: 'primitive',
       UPDATE_DESCRIPTION: { description: 'string' },
       UPDATE_VALUE: { value: 'string' },
@@ -120,13 +119,36 @@ export const machine = createMachine(
   }),
 ).provideOptions(({ assign }) => ({
   actions: {
+    setId: assign('context.id', {
+      SET_ID: ({ payload }) => payload.id,
+    }),
+    build: assign('context', ({ context: { id } }) => {
+      // Load existing asset data
+      const stored = ls.get(CONTRACTS_STORAGE_KEY) ?? {};
+      const existingAsset = (stored as Record<string, any>)[id!];
+
+      console.log(
+        'Loaded existing asset from localStorage:',
+        existingAsset,
+      );
+
+      if (existingAsset) {
+        return {
+          ...existingAsset,
+          value: existingAsset.value,
+          errors: {},
+        };
+      }
+      return {
+        ...DEFAULT_CONTRACT,
+        errors: {},
+      };
+    }),
     reset: assign('context', () => ({
       ...DEFAULT_CONTRACT,
-      id: nanoid(),
       errors: {},
     })),
 
-    updateId: assign('context.id', () => nanoid()),
     updateDescription: assign('context.description', {
       UPDATE_DESCRIPTION: ({ payload }) => payload.description,
     }),
@@ -136,7 +158,9 @@ export const machine = createMachine(
     }),
     validateValue: assign('context.errors', ({ context }) => {
       const errors: Record<string, string> = { ...context.errors };
-      const value = retrieveNumberS.number(context.value);
+      const value = Number(
+        context.value?.replaceAll(',', '').replaceAll('.', ''),
+      );
       if (value < 0) {
         errors.value = 'La valeur doit être un nombre positif';
       } else {

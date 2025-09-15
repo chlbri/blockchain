@@ -14,7 +14,13 @@ export const displayNumberS = (num?: string, replacer = '.') => {
   return result;
 };
 
-export const retrieveNumberS = (str: string, ...replacers: string[]) => {
+export const retrieveNumberS = (str?: string, ...replacers: string[]) => {
+  if (!str) return '';
   const _replacers = uniqueArray(...replacers, '.');
   return _replacers.reduce((s, r) => s.replaceAll(r, ''), str);
+};
+
+retrieveNumberS.number = (str?: string, ...replacers: string[]) => {
+  const numStr = retrieveNumberS(str, ...replacers);
+  return Number(numStr);
 };

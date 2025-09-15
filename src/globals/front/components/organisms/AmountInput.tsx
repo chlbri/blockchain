@@ -34,6 +34,7 @@ export const AmountInput: Component<Props> = props => {
           type='text'
           value={displayNumberS(props.value())}
           onInput={e => {
+            
             //Don't allow non numeric characters
             e.currentTarget.value = e.currentTarget.value.replace(
               /[^0-9.]/g,

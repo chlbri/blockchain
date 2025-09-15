@@ -223,9 +223,13 @@ function AssetsPage() {
                       <button class='px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors'>
                         Voir
                       </button>
-                      <button class='px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors'>
+                      <Link
+                        to='/contracts/edit/$id'
+                        params={{ id: asset.id }}
+                        class='px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors inline-block'
+                      >
                         Éditer
-                      </button>
+                      </Link>
                       <button class='px-3 py-1 text-sm bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors'>
                         Supprimer
                       </button>
