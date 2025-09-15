@@ -1,3 +1,5 @@
+import { Defined } from '#components/molecules/Defined';
+
 interface CompanyFieldsProps {
   companyName: string;
   registrationNumber: string;
@@ -31,11 +33,10 @@ export const CompanyFields = (props: CompanyFieldsProps) => {
               : ''
           }`}
         />
-        {props.errors.companyName && (
-          <p class='mt-1 text-sm text-red-500'>
-            {props.errors.companyName}
-          </p>
-        )}
+
+        <Defined data={props.errors.companyName}>
+          {error => <p class='mt-1 text-sm text-red-500'>{error}</p>}
+        </Defined>
       </div>
 
       <div>
@@ -55,11 +56,10 @@ export const CompanyFields = (props: CompanyFieldsProps) => {
               : ''
           }`}
         />
-        {props.errors.registrationNumber && (
-          <p class='mt-1 text-sm text-red-500'>
-            {props.errors.registrationNumber}
-          </p>
-        )}
+
+        <Defined data={props.errors.registrationNumber}>
+          {error => <p class='mt-1 text-sm text-red-500'>{error}</p>}
+        </Defined>
       </div>
     </div>
   );

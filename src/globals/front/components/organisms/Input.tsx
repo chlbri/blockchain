@@ -1,26 +1,21 @@
 import { Defined } from '#components/molecules/Defined';
-import {
-  displayNumberS,
-  retrieveNumberS,
-} from '#globals/front/helpers/numbers';
 import type { Component } from 'solid-js';
 import { Accessor } from 'solid-js';
 
-interface Props {
+type Props = {
   label: string;
-  value: Accessor<string | undefined>;
+  value: Accessor<string | undefined | null>;
   onInput: (value: string) => void;
-  placeholder: Accessor<string>;
+  placeholder: string;
   required?: boolean;
   error?: Accessor<string>;
   class?: string;
   disabled?: Accessor<boolean>;
   helperText?: string;
-  currency?: Accessor<string>;
-}
+};
 
-export const AmountInput: Component<Props> = props => {
-  const hasError = () => !!props.error;
+export const Input: Component<Props> = props => {
+  const hasError = () => !!props.error?.();
   const isRequired = props.required === true;
 
   return (
@@ -32,40 +27,19 @@ export const AmountInput: Component<Props> = props => {
       <div class='relative'>
         <input
           type='text'
-          value={displayNumberS(props.value())}
-          onInput={e => {
-            //Don't allow non numeric characters
-            e.currentTarget.value = e.currentTarget.value.replace(
-              /[^0-9.]/g,
-              '',
-            );
-            const value = retrieveNumberS(e.currentTarget.value);
-            props.onInput(value);
-          }}
-          placeholder={props.placeholder()}
+          value={props.value() ?? ''}
+          onInput={e => props.onInput(e.currentTarget.value)}
+          placeholder={props.placeholder}
           disabled={props.disabled?.()}
           class='w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white h-10 disabled:bg-gray-100 disabled:dark:bg-gray-600 disabled:cursor-not-allowed'
           classList={{
             'border-red-500 focus:ring-red-500': hasError(),
-            'pr-12': !!props.currency?.(),
           }}
         />
-
-        <Defined.WithA data={props.currency}>
-          {currency => (
-            <div class='absolute inset-y-0 right-0 flex items-center pr-3'>
-              <span class='text-gray-500 dark:text-gray-400 text-sm'>
-                {currency}
-              </span>
-            </div>
-          )}
-        </Defined.WithA>
       </div>
-
       <Defined.WithAccessor data={props.error}>
         {error => <p class='mt-1 text-sm text-red-500'>{error}</p>}
       </Defined.WithAccessor>
-
       <Defined data={props.helperText} extraCheck={() => !hasError()}>
         {helperText => (
           <p class='mt-1 text-xs text-gray-500 dark:text-gray-400'>

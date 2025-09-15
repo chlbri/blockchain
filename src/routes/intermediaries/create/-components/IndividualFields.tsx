@@ -1,3 +1,5 @@
+import { Defined } from '#components/molecules/Defined';
+
 interface IndividualFieldsProps {
   firstName: string;
   lastName: string;
@@ -48,11 +50,10 @@ export const IndividualFields = (props: IndividualFieldsProps) => {
                 : ''
             }`}
           />
-          {props.errors.lastName && (
-            <p class='mt-1 text-sm text-red-500'>
-              {props.errors.lastName}
-            </p>
-          )}
+
+          <Defined data={props.errors.lastName}>
+            {error => <p class='mt-1 text-sm text-red-500'>{error}</p>}
+          </Defined>
         </div>
       </div>
 
@@ -71,11 +72,10 @@ export const IndividualFields = (props: IndividualFieldsProps) => {
               : ''
           }`}
         />
-        {props.errors.nationalID && (
-          <p class='mt-1 text-sm text-red-500'>
-            {props.errors.nationalID}
-          </p>
-        )}
+
+        <Defined data={props.errors.nationalID}>
+          {error => <p class='mt-1 text-sm text-red-500'>{error}</p>}
+        </Defined>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { For } from 'solid-js';
+import { Defined } from '#components/molecules/Defined';
+import { For, Show } from 'solid-js';
 
 interface ContactFieldsProps {
   phoneNumbers: { countryCode: number; number: number }[];
@@ -90,7 +91,8 @@ export const ContactFields = (props: ContactFieldsProps) => {
               <span class='flex-1 px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 text-sm text-gray-700 dark:text-gray-300'>
                 {phone.number}
               </span>
-              {props.phoneNumbers.length > 1 && (
+
+              <Show when={props.phoneNumbers.length > 1}>
                 <button
                   type='button'
                   onClick={() => props.onRemovePhone(index())}
@@ -98,7 +100,7 @@ export const ContactFields = (props: ContactFieldsProps) => {
                 >
                   ✕
                 </button>
-              )}
+              </Show>
             </div>
           )}
         </For>
@@ -124,9 +126,10 @@ export const ContactFields = (props: ContactFieldsProps) => {
             Ajouter
           </button>
         </div>
-        {props.errors.phoneNumbers && (
-          <p class='text-sm text-red-500'>{props.errors.phoneNumbers}</p>
-        )}
+
+        <Defined data={props.errors.phoneNumbers}>
+          {error => <p class='text-sm text-red-500'>{error}</p>}
+        </Defined>
       </div>
 
       {/* Emails */}
@@ -172,9 +175,10 @@ export const ContactFields = (props: ContactFieldsProps) => {
             Ajouter
           </button>
         </div>
-        {props.errors.emails && (
-          <p class='text-sm text-red-500'>{props.errors.emails}</p>
-        )}
+
+        <Defined data={props.errors.emails}>
+          {error => <p class='text-sm text-red-500'>{error}</p>}
+        </Defined>
       </div>
 
       {/* Social Media */}

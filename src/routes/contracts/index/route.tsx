@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/solid-router';
 import ls from 'localstorage-slim';
 
 import { CURRENCIES } from '#features/blockchain/back';
-import { createSignal, For, onMount } from 'solid-js';
+import { createSignal, For, onMount, Show } from 'solid-js';
 import { CONTRACTS_STORAGE_KEY } from '../create/-services/form/constants';
 
 // Local implementation of displayNumber
@@ -236,7 +236,7 @@ function AssetsPage() {
             </For>
 
             {/* Empty State */}
-            {filteredAssets().length === 0 && (
+            <Show when={filteredAssets().length === 0}>
               <div class='text-center py-12'>
                 <div class='text-gray-400 dark:text-gray-500 text-6xl mb-4'>
                   📦
@@ -256,7 +256,7 @@ function AssetsPage() {
                   Créer votre premier Asset
                 </Link>
               </div>
-            )}
+            </Show>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { ButtonUpdate } from '#components/atoms/ButtonUpdate';
 import { createFileRoute } from '@tanstack/solid-router';
+import { deepEqual } from 'fast-equals';
 import { Show } from 'solid-js';
 import { CompanyFields } from './-components/CompanyFields';
 import { ContactFields } from './-components/ContactFields';
@@ -8,7 +9,6 @@ import { PersonalitySelector } from './-components/PersonalitySelector';
 import { WalletFields } from './-components/WalletFields';
 import { useHooks } from './-hooks';
 import { context, start } from './-services/form';
-import { deepEqual } from 'fast-equals';
 
 export const Route = createFileRoute('/intermediaries/create')({
   component: () => {
@@ -252,7 +252,8 @@ export const Route = createFileRoute('/intermediaries/create')({
                   class='flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed cursor-pointer'
                   onClick={handleSubmit}
                 >
-                  {submitting() ? 'Création...' : "Créer l'Intermédiaire"}
+                  {/* {submitting() ? 'Création...' : "Créer l'Intermédiaire"} */}
+                  Créer l'Intermédiaire
                 </button>
 
                 <button

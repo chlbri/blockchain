@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { Component, createSignal, Show } from 'solid-js';
 type MediaSectionProps = {
   title: string;
   items?: string[];
@@ -55,7 +55,7 @@ export const Medias: Component<MediaSectionProps> = ({
         </button>
       </div>
 
-      {items?.length > 0 && (
+      <Show when={items?.length > 0}>
         <div class='space-y-2'>
           {items.map((item, index) => (
             <div class='flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded'>
@@ -84,13 +84,13 @@ export const Medias: Component<MediaSectionProps> = ({
             </div>
           ))}
         </div>
-      )}
+      </Show>
 
-      {items.length === 0 && (
+      <Show when={items?.length === 0}>
         <p class='text-sm text-gray-500 dark:text-gray-400 italic'>
           Aucun {title.toLowerCase()} ajouté
         </p>
-      )}
+      </Show>
     </div>
   );
 };

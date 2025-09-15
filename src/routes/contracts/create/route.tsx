@@ -1,13 +1,13 @@
 import { ButtonUpdate } from '#components/atoms/ButtonUpdate';
+import { AmountInput } from '#components/organisms/AmountInput';
 import { createFileRoute } from '@tanstack/solid-router';
+import { deepEqual } from 'fast-equals';
 import { For } from 'solid-js';
 import { CURRENCIES } from 'src/features/blockchain/back';
 import { Currency } from './-components/Currency';
 import { Medias } from './-components/Medias';
 import { useHooks } from './-hooks';
 import { start } from './-services/form';
-import { AmountInput } from '#components/organisms/AmountInput';
-import { deepEqual } from 'fast-equals';
 
 export const Route = createFileRoute('/contracts/create')({
   component: () => {
