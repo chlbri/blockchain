@@ -1,5 +1,6 @@
 import { AmountInput } from '#components/organisms/AmountInput';
 import { Input } from '#components/organisms/Input';
+import { deepEqual } from 'fast-equals';
 import { Component } from 'solid-js';
 import { select, send } from '../-services/form';
 
@@ -12,7 +13,7 @@ export const WalletFields: Component = () => {
 
       <Input
         label='Adresse du portefeuille *'
-        value={select('context.wallet')}
+        value={select('context.wallet', deepEqual)}
         onInput={wallet => {
           send({
             type: 'UPDATE_WALLET',
@@ -33,7 +34,7 @@ export const WalletFields: Component = () => {
             payload: { sacrifice },
           });
         }}
-        value={select('context.sacrifice')}
+        value={select('context.sacrifice', deepEqual)}
         helperText="Montant que l'intermédiaire est prêt à sacrifier"
       />
     </div>

@@ -31,6 +31,7 @@ const Link: Component<LinkProps> = ({ children, to, search }) => {
 const HeadLinks: Component = () => {
   const LINKS = createLinks({
     // filter: value => value === '/projects' || !value.includes('projects'),
+    filter: value => !value.includes('/$id'),
     formatLabel,
   });
 

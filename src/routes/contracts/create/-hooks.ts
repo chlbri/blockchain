@@ -1,4 +1,6 @@
+import { CURRENCIES } from '#features/blockchain/back';
 import sleep from '@bemedev/sleep';
+import { useNavigate } from '@tanstack/solid-router';
 import ls from 'localstorage-slim';
 import {
   addOptions,
@@ -10,7 +12,8 @@ import {
 import { CONTRACTS_STORAGE_KEY } from './-services/form/constants';
 
 export const useHooks = () => {
-  addOptions(() => ({
+  const navigate = useNavigate();
+  addOptions(({ voidAction }) => ({
     promises: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       submit: async ({ context: { errors, id, ...asset } }) => {
@@ -19,16 +22,25 @@ export const useHooks = () => {
           throw new Error('Invalid value');
         }
 
+        // Convert currency string to Currency object
+        const currencyObj = CURRENCIES.find(
+          c => c.bank === asset.currency,
+        );
+        const assetWithCurrency = {
+          ...asset,
+          currency: currencyObj || CURRENCIES[0],
+        };
+
         await sleep(100);
 
-        console.log('Asset créé:', { ...asset, id });
+        console.log('Asset créé:', { ...assetWithCurrency, id });
 
         // #region Store asset in localStorage using localstorage-slim
         const all = ls.get(CONTRACTS_STORAGE_KEY) ?? {};
 
         ls.set(CONTRACTS_STORAGE_KEY, {
           ...all,
-          [id!]: asset,
+          [id!]: assetWithCurrency,
         });
 
         console.log(
@@ -39,6 +51,14 @@ export const useHooks = () => {
 
         await sleep(100);
       },
+    },
+    actions: {
+      end: voidAction(() => {
+        navigate({
+          to: '/contracts',
+          replace: true,
+        });
+      }),
     },
   }));
 

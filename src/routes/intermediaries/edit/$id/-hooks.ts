@@ -1,10 +1,8 @@
-import { CURRENCIES } from '#features/blockchain/back';
 import sleep from '@bemedev/sleep';
 import { useNavigate } from '@tanstack/solid-router';
 import ls from 'localstorage-slim';
 import { onCleanup, onMount } from 'solid-js';
 import { service } from './-services/form';
-import { CONTRACTS_STORAGE_KEY } from './-services/form/constants';
 
 export const useHooks = (id: string) => {
   const {
@@ -21,37 +19,29 @@ export const useHooks = (id: string) => {
   addOptions(({ voidAction }) => ({
     promises: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      submit: async ({ context: { errors, id, ...asset } }) => {
-        console.log('EXEC EDIT');
-        if (!asset.value || asset.value === '0') {
-          throw new Error('Invalid value');
+      submit: async ({ context: { errors, ...intermediary } }) => {
+        console.log('EXEC EDIT INTERMEDIARY');
+        if (!intermediary.wallet?.trim()) {
+          throw new Error('Wallet is required');
         }
-
-        // Convert currency string to Currency object
-        const currencyObj = CURRENCIES.find(
-          c => c.bank === asset.currency,
-        );
-        const assetWithCurrency = {
-          ...asset,
-          currency: currencyObj || CURRENCIES[0],
-        };
 
         await sleep(100);
 
-        console.log('Asset modifié:', { ...assetWithCurrency, id });
+        console.log('Intermediary modifié:', intermediary);
 
-        // #region Update asset in localStorage using localstorage-slim
-        const all: any = ls.get(CONTRACTS_STORAGE_KEY) ?? {};
-        const current = (all[id!] ?? {}) as typeof assetWithCurrency;
+        // #region Update intermediary in localStorage
+        const all: any = ls.get('intermediaries->') ?? {};
+        const current = (all[intermediary.id!] ??
+          {}) as typeof intermediary;
 
-        ls.set(CONTRACTS_STORAGE_KEY, {
+        ls.set('intermediaries->', {
           ...all,
-          [id!]: { ...current, ...assetWithCurrency },
+          [intermediary.id!]: { ...current, ...intermediary },
         });
 
         console.log(
-          'Asset updated in localStorage inside:',
-          CONTRACTS_STORAGE_KEY,
+          'Intermediary updated in localStorage inside:',
+          'intermediaries->',
         );
         // #endregion
 
@@ -61,7 +51,7 @@ export const useHooks = (id: string) => {
     actions: {
       end: voidAction(() => {
         navigate({
-          to: '/contracts',
+          to: '/intermediaries',
           replace: true,
         });
       }),
@@ -78,14 +68,14 @@ export const useHooks = (id: string) => {
     }
   });
 
-  const validateAmount = () => {
-    const error = select('context.errors.value')();
-    return !error;
+  const validateForm = () => {
+    const errors = select('context.errors')();
+    return Object.keys(errors || {}).length === 0;
   };
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
-    if (!validateAmount()) return;
+    if (!validateForm()) return;
     send('SUBMIT');
   };
 

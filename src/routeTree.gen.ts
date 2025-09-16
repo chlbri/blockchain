@@ -14,6 +14,7 @@ import { Route as IntermediariesCreateRouteRouteImport } from './routes/intermed
 import { Route as ContractsCreateRouteRouteImport } from './routes/contracts/create/route'
 import { Route as IntermediariesIndexRouteRouteImport } from './routes/intermediaries/index/route'
 import { Route as ContractsIndexRouteRouteImport } from './routes/contracts/index/route'
+import { Route as IntermediariesEditIdRouteRouteImport } from './routes/intermediaries/edit/$id/route'
 import { Route as ContractsEditIdRouteRouteImport } from './routes/contracts/edit/$id/route'
 
 const IndexRouteRoute = IndexRouteRouteImport.update({
@@ -43,6 +44,12 @@ const ContractsIndexRouteRoute = ContractsIndexRouteRouteImport.update({
   path: '/contracts/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntermediariesEditIdRouteRoute =
+  IntermediariesEditIdRouteRouteImport.update({
+    id: '/intermediaries/edit/$id',
+    path: '/intermediaries/edit/$id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContractsEditIdRouteRoute = ContractsEditIdRouteRouteImport.update({
   id: '/contracts/edit/$id',
   path: '/contracts/edit/$id',
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
@@ -64,6 +72,7 @@ export interface FileRoutesByTo {
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -73,6 +82,7 @@ export interface FileRoutesById {
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
+    | '/intermediaries/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
+    | '/intermediaries/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -99,6 +111,7 @@ export interface FileRouteTypes {
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
+    | '/intermediaries/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -108,6 +121,7 @@ export interface RootRouteChildren {
   ContractsCreateRouteRoute: typeof ContractsCreateRouteRoute
   IntermediariesCreateRouteRoute: typeof IntermediariesCreateRouteRoute
   ContractsEditIdRouteRoute: typeof ContractsEditIdRouteRoute
+  IntermediariesEditIdRouteRoute: typeof IntermediariesEditIdRouteRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -147,6 +161,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof ContractsIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/intermediaries/edit/$id': {
+      id: '/intermediaries/edit/$id'
+      path: '/intermediaries/edit/$id'
+      fullPath: '/intermediaries/edit/$id'
+      preLoaderRoute: typeof IntermediariesEditIdRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contracts/edit/$id': {
       id: '/contracts/edit/$id'
       path: '/contracts/edit/$id'
@@ -164,6 +185,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContractsCreateRouteRoute: ContractsCreateRouteRoute,
   IntermediariesCreateRouteRoute: IntermediariesCreateRouteRoute,
   ContractsEditIdRouteRoute: ContractsEditIdRouteRoute,
+  IntermediariesEditIdRouteRoute: IntermediariesEditIdRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,18 +1,18 @@
+import { Currency } from '#components/molecules/Currency';
 import { AmountInput } from '#components/organisms/AmountInput';
-import { createFileRoute, useNavigate } from '@tanstack/solid-router';
+import { Medias } from '#components/organisms/Medias';
+import { CURRENCIES } from '#features/blockchain/back';
+import { createFileRoute } from '@tanstack/solid-router';
 import { deepEqual } from 'fast-equals';
 import { For } from 'solid-js';
-import { CURRENCIES } from 'src/features/blockchain/back';
-import { Currency } from './-components/Currency';
-import { Medias } from './-components/Medias';
 import { useHooks } from './-hooks';
 
 export const Route = createFileRoute('/contracts/edit/$id')({
   component: () => {
     const id = Route.useParams({ select: ({ id }) => id });
 
-    const { send, select, handleSubmit, submitting } = useHooks(id());
-    const navigate = useNavigate();
+    const { send, select, handleSubmit, submitting, context } =
+      useHooks(id());
 
     return (
       <div class='min-h-screen bg-gray-50 dark:bg-gray-900 py-12'>
@@ -80,7 +80,7 @@ export const Route = createFileRoute('/contracts/edit/$id')({
                   setCurrent={value =>
                     send({
                       type: 'UPDATE_CURRENCY',
-                      payload: { currency: value ?? CURRENCIES[0] },
+                      payload: { currency: value ?? CURRENCIES[0].bank },
                     })
                   }
                 />
@@ -96,13 +96,22 @@ export const Route = createFileRoute('/contracts/edit/$id')({
                   {type => (
                     <Medias
                       title={`${type.charAt(0).toUpperCase()}${type.slice(1)}`}
-                      items={select(`context.medias.${type}`, deepEqual)()}
+                      items={context(
+                        ctx => ctx.medias?.[type] ?? [],
+                        deepEqual,
+                      )}
                       onAdd={value =>
                         send({
                           type: 'MEDIA_ADD',
                           payload: { type, value },
                         })
                       }
+                      onUpdate={(index, value) => {
+                        send({
+                          type: 'MEDIA_UPDATE',
+                          payload: { type, index, value },
+                        });
+                      }}
                       onRemove={index =>
                         send({
                           type: 'MEDIA_REMOVE',
@@ -129,10 +138,7 @@ export const Route = createFileRoute('/contracts/edit/$id')({
                 <button
                   type='button'
                   onClick={() => {
-                    navigate({
-                      to: '/contracts',
-                      replace: true,
-                    });
+                    send('RESET');
                   }}
                   class='px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200'
                 >

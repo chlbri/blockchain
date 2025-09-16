@@ -9,12 +9,12 @@ export const DEFAULT_REPARTITIONS = [
 ];
 
 export const CURRENCIES = [
-  'XOF (Francs CFA)',
-  'EUR',
-  'USD',
-  'GBP',
-  'JPY',
-  'CAD',
-  'AUD',
-  'CHF',
+  { display: 'CFA', bank: 'XOF' },
+  { display: '€', bank: 'EUR' },
+  { display: '$', bank: 'USD' },
+  { display: '£', bank: 'GBP' },
+  { display: '¥', bank: 'JPY' },
+  { display: 'C$', bank: 'CAD' },
+  { display: 'A$', bank: 'AUD' },
+  { display: 'CHF', bank: 'CHF' },
 ];

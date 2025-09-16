@@ -31,5 +31,3 @@ export const AccordionQA: Component<{ data: AccordionData[] }> = ({
     </AccordionD>
   );
 };
-
-export default AccordionQA;

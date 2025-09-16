@@ -1,18 +1,18 @@
 import { ButtonUpdate } from '#components/atoms/ButtonUpdate';
+import { Currency } from '#components/molecules/Currency';
 import { AmountInput } from '#components/organisms/AmountInput';
+import { Medias } from '#components/organisms/Medias';
+import { CURRENCIES } from '#features/blockchain/back';
 import { createFileRoute } from '@tanstack/solid-router';
 import { deepEqual } from 'fast-equals';
-import { For } from 'solid-js';
-import { CURRENCIES } from 'src/features/blockchain/back';
-import { Currency } from './-components/Currency';
-import { Medias } from './-components/Medias';
+import { For, onMount } from 'solid-js';
 import { useHooks } from './-hooks';
 import { start } from './-services/form';
 
 export const Route = createFileRoute('/contracts/create')({
   component: () => {
-    start();
-    const { send, select, handleSubmit, submitting } = useHooks();
+    onMount(start);
+    const { send, select, handleSubmit, submitting, context } = useHooks();
 
     return (
       <div class='min-h-screen bg-gray-50 dark:bg-gray-900 py-12'>
@@ -86,7 +86,7 @@ export const Route = createFileRoute('/contracts/create')({
                   setCurrent={value =>
                     send({
                       type: 'UPDATE_CURRENCY',
-                      payload: { currency: value ?? CURRENCIES[0] },
+                      payload: { currency: value ?? CURRENCIES[0].bank },
                     })
                   }
                 />
@@ -102,13 +102,22 @@ export const Route = createFileRoute('/contracts/create')({
                   {type => (
                     <Medias
                       title={`${type.charAt(0).toUpperCase()}${type.slice(1)}`}
-                      items={select(`context.medias.${type}`, deepEqual)()}
+                      items={context(
+                        ctx => ctx.medias?.[type] ?? [],
+                        deepEqual,
+                      )}
                       onAdd={value =>
                         send({
                           type: 'MEDIA_ADD',
                           payload: { type, value },
                         })
                       }
+                      onUpdate={(index, value) => {
+                        send({
+                          type: 'MEDIA_UPDATE',
+                          payload: { type, index, value },
+                        });
+                      }}
                       onRemove={index =>
                         send({
                           type: 'MEDIA_REMOVE',

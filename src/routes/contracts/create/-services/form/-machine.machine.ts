@@ -79,6 +79,7 @@ export const machine = createMachine(
               src: 'submit',
               then: { target: '/idle' },
               catch: { target: '/working/stable' },
+              finally: ['end'],
               description: 'Submitting the asset form',
               max: 'MAX_DURATION',
             },

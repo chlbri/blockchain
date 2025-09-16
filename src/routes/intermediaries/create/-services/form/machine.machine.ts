@@ -1,8 +1,12 @@
-import type { Personality } from '#features/blockchain/back';
+import type {
+  Personality,
+  PhoneNumber,
+  Social,
+} from '#features/blockchain/back';
 import { createMachine, typings } from '@bemedev/app-ts';
 import { nanoid } from 'nanoid';
-import { SCHEMAS } from './machine.machine.gen';
 import { DEFAULT_INTERMEDIARY } from './constants';
+import { SCHEMAS } from './machine.machine.gen';
 
 export const machine = createMachine(
   {
@@ -24,7 +28,7 @@ export const machine = createMachine(
           },
 
           RESET: {
-            actions: ['reset'],
+            actions: ['reset', 'end'],
           },
 
           UPDATE_WALLET: {
@@ -148,6 +152,7 @@ export const machine = createMachine(
               src: 'submit',
               then: { target: '/idle' },
               catch: { target: '/working/stable' },
+              finally: ['end'],
               description: 'Submitting the intermediary form',
               max: 'MAX_DURATION',
             },
@@ -209,10 +214,9 @@ export const machine = createMachine(
       registrationNumber: 'string',
 
       contacts: typings.partial({
-        phoneNumbers:
-          typings.custom<{ countryCode: number; number: number }[]>(),
+        phoneNumbers: typings.custom<PhoneNumber[]>(),
         emails: typings.custom<string[]>(),
-        socials: typings.custom<Record<string, string>>(),
+        socials: typings.custom<Social[]>(),
         websites: typings.custom<string[]>(),
       }),
 
@@ -298,7 +302,7 @@ export const machine = createMachine(
     addEmail: assign('context.contacts.emails', {
       ADD_EMAIL: ({ payload, context }) => [
         ...(context.contacts?.emails || []),
-        payload,
+        payload.email,
       ],
     }),
 
@@ -318,31 +322,24 @@ export const machine = createMachine(
 
     addSocial: assign('context.contacts.socials', {
       ADD_SOCIAL: ({ payload, context }) => {
-        const _default = context.contacts?.socials || {};
-        return {
-          ..._default,
-          [payload.platform]: payload.url,
-        };
+        const _default = context.contacts?.socials || [];
+        return [..._default, payload];
       },
     }),
 
     updateSocial: assign('context.contacts.socials', {
       UPDATE_SOCIAL: ({ payload, context }) => {
-        const _default = context.contacts?.socials || {};
-        return {
-          ..._default,
-          [payload.platform]: payload.url,
-        };
+        return context.contacts?.socials?.map(social =>
+          social.platform === payload.platform ? payload : social,
+        );
       },
     }),
 
     removeSocial: assign('context.contacts.socials', {
       REMOVE_SOCIAL: ({ payload, context }) => {
-        const _default = context.contacts?.socials || {};
-        return {
-          ...(_default || {}),
-          [payload.platform]: undefined,
-        };
+        return context.contacts?.socials?.filter(
+          ({ platform }) => platform !== payload.platform,
+        );
       },
     }),
 

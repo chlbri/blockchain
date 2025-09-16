@@ -1,4 +1,5 @@
 import sleep from '@bemedev/sleep';
+import { useNavigate } from '@tanstack/solid-router';
 import ls from 'localstorage-slim';
 import {
   addOptions,
@@ -10,7 +11,9 @@ import {
 import { INTERMEDIARIES_STORAGE_KEY } from './-services/form/constants';
 
 export const useHooks = () => {
-  addOptions(() => ({
+  const navigate = useNavigate();
+
+  addOptions(({ voidAction }) => ({
     promises: {
       submit: async ({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,11 +42,16 @@ export const useHooks = () => {
         await sleep(100);
       },
     },
+    actions: {
+      end: voidAction(() => {
+        navigate({ to: '/intermediaries', replace: true });
+      }),
+    },
   }));
 
   const validateForm = () => {
     const errors = select('context.errors')();
-    return !Object.keys(errors).length;
+    return !Object.keys(errors || {}).length;
   };
 
   const handleSubmit = (e: Event) => {

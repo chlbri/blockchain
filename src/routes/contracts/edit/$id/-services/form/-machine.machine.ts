@@ -24,7 +24,7 @@ export const machine = createMachine(
       working: {
         on: {
           RESET: {
-            actions: ['reset'],
+            actions: ['reset', 'end'],
             target: '/idle',
             description: 'Reset the form',
           },
@@ -77,6 +77,7 @@ export const machine = createMachine(
               src: 'submit',
               then: { target: '/idle' },
               catch: { target: '/idle' },
+              finally: ['end'],
               description: 'Submitting the asset form',
               max: 'MAX_DURATION',
             },

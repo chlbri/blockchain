@@ -1,11 +1,12 @@
 import { Defined } from '#components/molecules/Defined';
-import { For, Show } from 'solid-js';
+import type { PhoneNumber, Social } from '#features/blockchain/back';
+import { createMemo, For, Show, type Accessor } from 'solid-js';
 
 interface ContactFieldsProps {
-  phoneNumbers: { countryCode: number; number: number }[];
-  emails: string[];
-  socials: Record<string, string>;
-  websites: string[];
+  phoneNumbers: Accessor<PhoneNumber[] | undefined>;
+  emails: Accessor<string[] | undefined>;
+  socials: Accessor<Social[] | undefined>;
+  websites: Accessor<string[] | undefined>;
   onAddPhone: (countryCode: number, number: number) => void;
   onUpdatePhone: (
     index: number,
@@ -71,18 +72,21 @@ export const ContactFields = (props: ContactFieldsProps) => {
     }
   };
 
+  const hasNumber = createMemo(() => {
+    return props.phoneNumbers()?.length !== 0;
+  });
+
   return (
     <div class='space-y-6'>
       <h3 class='text-lg font-medium text-gray-900 dark:text-white'>
         Informations de contact
       </h3>
-
       {/* Phone Numbers */}
       <div class='space-y-3'>
         <label class='block text-sm font-medium text-gray-700 dark:text-gray-300'>
           Numéros de téléphone *
         </label>
-        <For each={props.phoneNumbers}>
+        <For each={props.phoneNumbers()}>
           {(phone, index) => (
             <div class='flex gap-2 items-center'>
               <span class='w-20 px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 text-sm text-gray-700 dark:text-gray-300'>
@@ -92,13 +96,13 @@ export const ContactFields = (props: ContactFieldsProps) => {
                 {phone.number}
               </span>
 
-              <Show when={props.phoneNumbers.length > 1}>
+              <Show when={hasNumber()}>
                 <button
                   type='button'
                   onClick={() => props.onRemovePhone(index())}
                   class='p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300'
                 >
-                  ✕
+                  X
                 </button>
               </Show>
             </div>
@@ -131,33 +135,35 @@ export const ContactFields = (props: ContactFieldsProps) => {
           {error => <p class='text-sm text-red-500'>{error}</p>}
         </Defined>
       </div>
-
       {/* Emails */}
       <div class='space-y-3'>
         <label class='block text-sm font-medium text-gray-700 dark:text-gray-300'>
           Adresses e-mail
         </label>
-        <For each={props.emails}>
-          {(email, index) => (
-            <div class='flex gap-2 items-center'>
-              <input
-                type='email'
-                value={email}
-                onInput={e =>
-                  props.onUpdateEmail(index(), e.currentTarget.value)
-                }
-                placeholder='exemple@email.com'
-                class='flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-              />
-              <button
-                type='button'
-                onClick={() => props.onRemoveEmail(index())}
-                class='p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300'
-              >
-                ✕
-              </button>
-            </div>
-          )}
+        <For each={props.emails()}>
+          {(email, index) => {
+            console.log('email', '=>', email);
+            return (
+              <div class='flex gap-2 items-center'>
+                <input
+                  type='email'
+                  value={email}
+                  onInput={e =>
+                    props.onUpdateEmail(index(), e.currentTarget.value)
+                  }
+                  placeholder='exemple@email.com'
+                  class='flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+                />
+                <button
+                  type='button'
+                  onClick={() => props.onRemoveEmail(index())}
+                  class='p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300'
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          }}
         </For>
         <div class='flex gap-2'>
           <input
@@ -180,14 +186,13 @@ export const ContactFields = (props: ContactFieldsProps) => {
           {error => <p class='text-sm text-red-500'>{error}</p>}
         </Defined>
       </div>
-
       {/* Social Media */}
       <div class='space-y-3'>
         <label class='block text-sm font-medium text-gray-700 dark:text-gray-300'>
           Réseaux sociaux
         </label>
-        <For each={Object.entries(props.socials || {})}>
-          {([platform, url]) => (
+        <For each={props.socials()}>
+          {({ platform, url }) => (
             <div class='flex gap-2 items-center'>
               <input
                 type='text'
@@ -240,13 +245,12 @@ export const ContactFields = (props: ContactFieldsProps) => {
           </button>
         </div>
       </div>
-
       {/* Websites */}
       <div class='space-y-3'>
         <label class='block text-sm font-medium text-gray-700 dark:text-gray-300'>
           Sites web
         </label>
-        <For each={props.websites}>
+        <For each={props.websites()}>
           {(website, index) => (
             <div class='flex gap-2 items-center'>
               <input

@@ -14,6 +14,9 @@ importers:
       '@bemedev/app-ts':
         specifier: ^0.9.21
         version: 0.9.21(vitest@3.2.4(@types/node@24.4.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+      '@bemedev/i18n':
+        specifier: ^0.2.1
+        version: 0.2.1(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.4.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)
       '@bemedev/sleep':
         specifier: ^0.1.2
         version: 0.1.2
@@ -350,6 +353,13 @@ packages:
 
   '@bemedev/fsf@0.8.0':
     resolution: {integrity: sha512-9/QvQvO/C6kerBzJocwTQxq3KYiwRLJqg+eGb6DK40O7VxNqSOZJAF6f4lJiZ4dPz893OJRh/4bNEMtqwMGJ+g==}
+
+  '@bemedev/i18n@0.2.1':
+    resolution: {integrity: sha512-i1DFLzpomAnMHJvsS5Gj95OjXdSkcy7gdVd0Nyx7npKC9aDkVKAgTSxTF2n4FnHzwfUdIyaGGFD7SZt2SyrObg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@bemedev/decompose': ^1.1.4
+      '@bemedev/types': ^0.4.1
 
   '@bemedev/interval2@0.1.3':
     resolution: {integrity: sha512-RWbferVoFH0CkpeNZ7DW2MFdl04clqp4Q9WaiQAqlW8kgsizQltXhy780QDtWkQi+cRLWZ9j/ItYcVJ1nr+vDQ==}
@@ -4095,6 +4105,11 @@ snapshots:
     dependencies:
       '@bemedev/x-guard': 0.2.0
       deepmerge: 4.3.1
+
+  '@bemedev/i18n@0.2.1(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.4.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)':
+    dependencies:
+      '@bemedev/decompose': 1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.4.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+      '@bemedev/types': 0.4.2
 
   '@bemedev/interval2@0.1.3':
     dependencies:

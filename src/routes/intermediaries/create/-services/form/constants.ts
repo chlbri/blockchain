@@ -1,14 +1,9 @@
 export const DEFAULT_INTERMEDIARY = {
   wallet: '',
   contacts: {
-    phoneNumbers: [
-      {
-        countryCode: 33,
-        number: 0,
-      },
-    ],
+    phoneNumbers: [],
     emails: [],
-    socials: {},
+    socials: [],
     websites: [],
   },
   personality: 'individual' as const,

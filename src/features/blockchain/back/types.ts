@@ -1,10 +1,15 @@
-type PhoneNumber = {
+export type PhoneNumber = {
   countryCode: number;
   number: number;
   network?: string;
 };
 
 export type Personality = 'individual' | 'company';
+
+export type Social = {
+  platform: string;
+  url: string;
+};
 
 // An intermediary in the chain
 
@@ -17,9 +22,9 @@ export type Intermediary = {
   sacrifice?: number;
   contacts: {
     // At least one phone number
-    phoneNumbers: [PhoneNumber, ...PhoneNumber[]];
+    phoneNumbers: PhoneNumber[];
     emails?: string[];
-    socials?: Record<string, string>;
+    socials?: Social[];
     websites?: string[];
   };
 } & (
@@ -51,12 +56,18 @@ export type CommissionProcedure = {
   repartitions: number[][];
 };
 
+export type Currency = {
+  display: string;
+  bank: string;
+  description?: string;
+};
+
 // An asset for sale
 export type Asset = {
   id: string;
   description: string;
   value: number;
-  currency: string;
+  currency: Currency;
   medias: {
     photos?: string[];
     videos?: string[];
