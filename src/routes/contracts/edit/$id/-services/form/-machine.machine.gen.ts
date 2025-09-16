@@ -1,7 +1,7 @@
 /**
  *
  * All paths of the concerned files
- *
+ * 
  * ### Author
  *
  * chlbri (bri_lvi@icloud.com)
@@ -23,24 +23,24 @@
     machine: '/' | '/idle' | '/working' | '/working/stable' | '/working/submitting';
   }
    /**
-   *
-   * Constants as type helpers for the concerned file.
+   * 
+   * Constants as type helpers for the concerned file. 
    * Don't use it as values, just for typings
-   *
+   * 
    * ### Author
-   *
+   * 
    * chlbri (bri_lvi@icloud.com)
-   *
+   * 
    * [My GitHub](https://github.com/chlbri?tab=repositories)
-   *
+   * 
    * <br/>
-   *
+   * 
    * ### Documentation
    *
    * Link to machine lib [here](https://www.npmjs.com/package/@bemedev/app-ts).
-   *
+   * 
    * Link to this lib [here](https://www.npmjs.com/package/@bemedev/app-cli)
-   *
+   * 
    * NB: This file is auto-generated. Do not edit manually.
    */
     export const SCHEMAS = {

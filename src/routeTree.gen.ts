@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
 import { Route as IntermediariesCreateRouteRouteImport } from './routes/intermediaries/create/route'
 import { Route as ContractsCreateRouteRouteImport } from './routes/contracts/create/route'
+import { Route as AuthRegisterRouteRouteImport } from './routes/auth/register/route'
+import { Route as AuthLoginRouteRouteImport } from './routes/auth/login/route'
 import { Route as IntermediariesIndexRouteRouteImport } from './routes/intermediaries/index/route'
 import { Route as ContractsIndexRouteRouteImport } from './routes/contracts/index/route'
 import { Route as IntermediariesEditIdRouteRouteImport } from './routes/intermediaries/edit/$id/route'
@@ -31,6 +33,16 @@ const IntermediariesCreateRouteRoute =
 const ContractsCreateRouteRoute = ContractsCreateRouteRouteImport.update({
   id: '/contracts/create',
   path: '/contracts/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRegisterRouteRoute = AuthRegisterRouteRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntermediariesIndexRouteRoute =
@@ -60,6 +72,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '/contracts': typeof ContractsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
+  '/auth/login': typeof AuthLoginRouteRoute
+  '/auth/register': typeof AuthRegisterRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
@@ -69,6 +83,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
   '/contracts': typeof ContractsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
+  '/auth/login': typeof AuthLoginRouteRoute
+  '/auth/register': typeof AuthRegisterRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
@@ -79,6 +95,8 @@ export interface FileRoutesById {
   '/': typeof IndexRouteRoute
   '/contracts/': typeof ContractsIndexRouteRoute
   '/intermediaries/': typeof IntermediariesIndexRouteRoute
+  '/auth/login': typeof AuthLoginRouteRoute
+  '/auth/register': typeof AuthRegisterRouteRoute
   '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
   '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
@@ -90,6 +108,8 @@ export interface FileRouteTypes {
     | '/'
     | '/contracts'
     | '/intermediaries'
+    | '/auth/login'
+    | '/auth/register'
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
     | '/'
     | '/contracts'
     | '/intermediaries'
+    | '/auth/login'
+    | '/auth/register'
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
@@ -108,6 +130,8 @@ export interface FileRouteTypes {
     | '/'
     | '/contracts/'
     | '/intermediaries/'
+    | '/auth/login'
+    | '/auth/register'
     | '/contracts/create'
     | '/intermediaries/create'
     | '/contracts/edit/$id'
@@ -118,6 +142,8 @@ export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
   ContractsIndexRouteRoute: typeof ContractsIndexRouteRoute
   IntermediariesIndexRouteRoute: typeof IntermediariesIndexRouteRoute
+  AuthLoginRouteRoute: typeof AuthLoginRouteRoute
+  AuthRegisterRouteRoute: typeof AuthRegisterRouteRoute
   ContractsCreateRouteRoute: typeof ContractsCreateRouteRoute
   IntermediariesCreateRouteRoute: typeof IntermediariesCreateRouteRoute
   ContractsEditIdRouteRoute: typeof ContractsEditIdRouteRoute
@@ -145,6 +171,20 @@ declare module '@tanstack/solid-router' {
       path: '/contracts/create'
       fullPath: '/contracts/create'
       preLoaderRoute: typeof ContractsCreateRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intermediaries/': {
@@ -182,6 +222,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
   ContractsIndexRouteRoute: ContractsIndexRouteRoute,
   IntermediariesIndexRouteRoute: IntermediariesIndexRouteRoute,
+  AuthLoginRouteRoute: AuthLoginRouteRoute,
+  AuthRegisterRouteRoute: AuthRegisterRouteRoute,
   ContractsCreateRouteRoute: ContractsCreateRouteRoute,
   IntermediariesCreateRouteRoute: IntermediariesCreateRouteRoute,
   ContractsEditIdRouteRoute: ContractsEditIdRouteRoute,
