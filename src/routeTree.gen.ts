@@ -11,13 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
 import { Route as IntermediariesCreateRouteRouteImport } from './routes/intermediaries/create/route'
-import { Route as ContractsCreateRouteRouteImport } from './routes/contracts/create/route'
 import { Route as AuthRegisterRouteRouteImport } from './routes/auth/register/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/auth/login/route'
+import { Route as AssetsCreateRouteRouteImport } from './routes/assets/create/route'
 import { Route as IntermediariesIndexRouteRouteImport } from './routes/intermediaries/index/route'
-import { Route as ContractsIndexRouteRouteImport } from './routes/contracts/index/route'
+import { Route as AssetsIndexRouteRouteImport } from './routes/assets/index/route'
 import { Route as IntermediariesEditIdRouteRouteImport } from './routes/intermediaries/edit/$id/route'
-import { Route as ContractsEditIdRouteRouteImport } from './routes/contracts/edit/$id/route'
+import { Route as AssetsEditIdRouteRouteImport } from './routes/assets/edit/$id/route'
 
 const IndexRouteRoute = IndexRouteRouteImport.update({
   id: '/',
@@ -30,11 +30,6 @@ const IntermediariesCreateRouteRoute =
     path: '/intermediaries/create',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ContractsCreateRouteRoute = ContractsCreateRouteRouteImport.update({
-  id: '/contracts/create',
-  path: '/contracts/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRegisterRouteRoute = AuthRegisterRouteRouteImport.update({
   id: '/auth/register',
   path: '/auth/register',
@@ -45,15 +40,20 @@ const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssetsCreateRouteRoute = AssetsCreateRouteRouteImport.update({
+  id: '/assets/create',
+  path: '/assets/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IntermediariesIndexRouteRoute =
   IntermediariesIndexRouteRouteImport.update({
     id: '/intermediaries/',
     path: '/intermediaries/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ContractsIndexRouteRoute = ContractsIndexRouteRouteImport.update({
-  id: '/contracts/',
-  path: '/contracts/',
+const AssetsIndexRouteRoute = AssetsIndexRouteRouteImport.update({
+  id: '/assets/',
+  path: '/assets/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntermediariesEditIdRouteRoute =
@@ -62,91 +62,91 @@ const IntermediariesEditIdRouteRoute =
     path: '/intermediaries/edit/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ContractsEditIdRouteRoute = ContractsEditIdRouteRouteImport.update({
-  id: '/contracts/edit/$id',
-  path: '/contracts/edit/$id',
+const AssetsEditIdRouteRoute = AssetsEditIdRouteRouteImport.update({
+  id: '/assets/edit/$id',
+  path: '/assets/edit/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
-  '/contracts': typeof ContractsIndexRouteRoute
+  '/assets': typeof AssetsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
+  '/assets/create': typeof AssetsCreateRouteRoute
   '/auth/login': typeof AuthLoginRouteRoute
   '/auth/register': typeof AuthRegisterRouteRoute
-  '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
-  '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/assets/edit/$id': typeof AssetsEditIdRouteRoute
   '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
-  '/contracts': typeof ContractsIndexRouteRoute
+  '/assets': typeof AssetsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
+  '/assets/create': typeof AssetsCreateRouteRoute
   '/auth/login': typeof AuthLoginRouteRoute
   '/auth/register': typeof AuthRegisterRouteRoute
-  '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
-  '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/assets/edit/$id': typeof AssetsEditIdRouteRoute
   '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
-  '/contracts/': typeof ContractsIndexRouteRoute
+  '/assets/': typeof AssetsIndexRouteRoute
   '/intermediaries/': typeof IntermediariesIndexRouteRoute
+  '/assets/create': typeof AssetsCreateRouteRoute
   '/auth/login': typeof AuthLoginRouteRoute
   '/auth/register': typeof AuthRegisterRouteRoute
-  '/contracts/create': typeof ContractsCreateRouteRoute
   '/intermediaries/create': typeof IntermediariesCreateRouteRoute
-  '/contracts/edit/$id': typeof ContractsEditIdRouteRoute
+  '/assets/edit/$id': typeof AssetsEditIdRouteRoute
   '/intermediaries/edit/$id': typeof IntermediariesEditIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/contracts'
+    | '/assets'
     | '/intermediaries'
+    | '/assets/create'
     | '/auth/login'
     | '/auth/register'
-    | '/contracts/create'
     | '/intermediaries/create'
-    | '/contracts/edit/$id'
+    | '/assets/edit/$id'
     | '/intermediaries/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/contracts'
+    | '/assets'
     | '/intermediaries'
+    | '/assets/create'
     | '/auth/login'
     | '/auth/register'
-    | '/contracts/create'
     | '/intermediaries/create'
-    | '/contracts/edit/$id'
+    | '/assets/edit/$id'
     | '/intermediaries/edit/$id'
   id:
     | '__root__'
     | '/'
-    | '/contracts/'
+    | '/assets/'
     | '/intermediaries/'
+    | '/assets/create'
     | '/auth/login'
     | '/auth/register'
-    | '/contracts/create'
     | '/intermediaries/create'
-    | '/contracts/edit/$id'
+    | '/assets/edit/$id'
     | '/intermediaries/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
-  ContractsIndexRouteRoute: typeof ContractsIndexRouteRoute
+  AssetsIndexRouteRoute: typeof AssetsIndexRouteRoute
   IntermediariesIndexRouteRoute: typeof IntermediariesIndexRouteRoute
+  AssetsCreateRouteRoute: typeof AssetsCreateRouteRoute
   AuthLoginRouteRoute: typeof AuthLoginRouteRoute
   AuthRegisterRouteRoute: typeof AuthRegisterRouteRoute
-  ContractsCreateRouteRoute: typeof ContractsCreateRouteRoute
   IntermediariesCreateRouteRoute: typeof IntermediariesCreateRouteRoute
-  ContractsEditIdRouteRoute: typeof ContractsEditIdRouteRoute
+  AssetsEditIdRouteRoute: typeof AssetsEditIdRouteRoute
   IntermediariesEditIdRouteRoute: typeof IntermediariesEditIdRouteRoute
 }
 
@@ -166,13 +166,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IntermediariesCreateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contracts/create': {
-      id: '/contracts/create'
-      path: '/contracts/create'
-      fullPath: '/contracts/create'
-      preLoaderRoute: typeof ContractsCreateRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth/register': {
       id: '/auth/register'
       path: '/auth/register'
@@ -187,6 +180,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof AuthLoginRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assets/create': {
+      id: '/assets/create'
+      path: '/assets/create'
+      fullPath: '/assets/create'
+      preLoaderRoute: typeof AssetsCreateRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/intermediaries/': {
       id: '/intermediaries/'
       path: '/intermediaries'
@@ -194,11 +194,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IntermediariesIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contracts/': {
-      id: '/contracts/'
-      path: '/contracts'
-      fullPath: '/contracts'
-      preLoaderRoute: typeof ContractsIndexRouteRouteImport
+    '/assets/': {
+      id: '/assets/'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsIndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intermediaries/edit/$id': {
@@ -208,11 +208,11 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IntermediariesEditIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contracts/edit/$id': {
-      id: '/contracts/edit/$id'
-      path: '/contracts/edit/$id'
-      fullPath: '/contracts/edit/$id'
-      preLoaderRoute: typeof ContractsEditIdRouteRouteImport
+    '/assets/edit/$id': {
+      id: '/assets/edit/$id'
+      path: '/assets/edit/$id'
+      fullPath: '/assets/edit/$id'
+      preLoaderRoute: typeof AssetsEditIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -220,13 +220,13 @@ declare module '@tanstack/solid-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
-  ContractsIndexRouteRoute: ContractsIndexRouteRoute,
+  AssetsIndexRouteRoute: AssetsIndexRouteRoute,
   IntermediariesIndexRouteRoute: IntermediariesIndexRouteRoute,
+  AssetsCreateRouteRoute: AssetsCreateRouteRoute,
   AuthLoginRouteRoute: AuthLoginRouteRoute,
   AuthRegisterRouteRoute: AuthRegisterRouteRoute,
-  ContractsCreateRouteRoute: ContractsCreateRouteRoute,
   IntermediariesCreateRouteRoute: IntermediariesCreateRouteRoute,
-  ContractsEditIdRouteRoute: ContractsEditIdRouteRoute,
+  AssetsEditIdRouteRoute: AssetsEditIdRouteRoute,
   IntermediariesEditIdRouteRoute: IntermediariesEditIdRouteRoute,
 }
 export const routeTree = rootRouteImport

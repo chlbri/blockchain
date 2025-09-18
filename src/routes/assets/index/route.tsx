@@ -7,7 +7,7 @@ import { DeleteDialog } from './-components/DeleteDialog';
 import { ViewSheet } from './-components/ViewSheet';
 import { useHooks } from './-hooks';
 
-export const Route = createFileRoute('/contracts/')({
+export const Route = createFileRoute('/assets/')({
   component: AssetsPage,
 });
 

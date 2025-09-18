@@ -9,7 +9,7 @@ import { For, onMount } from 'solid-js';
 import { useHooks } from './-hooks';
 import { start } from './-services/form';
 
-export const Route = createFileRoute('/contracts/create')({
+export const Route = createFileRoute('/assets/create')({
   component: () => {
     onMount(start);
     const { send, select, handleSubmit, submitting, context } = useHooks();

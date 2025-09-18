@@ -7,7 +7,7 @@ import { deepEqual } from 'fast-equals';
 import { For } from 'solid-js';
 import { useHooks } from './-hooks';
 
-export const Route = createFileRoute('/contracts/edit/$id')({
+export const Route = createFileRoute('/assets/edit/$id')({
   component: () => {
     const id = Route.useParams({ select: ({ id }) => id });
 
