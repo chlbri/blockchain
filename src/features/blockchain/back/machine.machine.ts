@@ -147,7 +147,7 @@ export const machine = createMachine(
     }),
 
     addMandatoryIntermediary: assign('context.intermediaries', {
-      START: ({ payload }) => [payload.mandatory!],
+      START: ({ payload }) => [payload.mandatory],
     }),
 
     addBlockImmoIntermediary: assign('context.intermediaries', {
@@ -155,6 +155,8 @@ export const machine = createMachine(
         ...intermediaries /*, TODO: Add BLOCK_IMMO intermediary */,
       ],
     }),
+    setOnlineStatus: assign('context.internetStatus', () => true),
+    setOfflineStatus: assign('context.internetStatus', () => false),
   },
   predicates: {
     assetIsDefined: {
