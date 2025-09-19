@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HowItWorksRouteRouteImport } from './routes/how-it-works/route'
+import { Route as DemoRouteRouteImport } from './routes/demo/route'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
 import { Route as IntermediariesCreateRouteRouteImport } from './routes/intermediaries/create/route'
 import { Route as AuthRegisterRouteRouteImport } from './routes/auth/register/route'
@@ -20,9 +20,9 @@ import { Route as AssetsIndexRouteRouteImport } from './routes/assets/index/rout
 import { Route as IntermediariesEditIdRouteRouteImport } from './routes/intermediaries/edit/$id/route'
 import { Route as AssetsEditIdRouteRouteImport } from './routes/assets/edit/$id/route'
 
-const HowItWorksRouteRoute = HowItWorksRouteRouteImport.update({
-  id: '/how-it-works',
-  path: '/how-it-works',
+const DemoRouteRoute = DemoRouteRouteImport.update({
+  id: '/demo',
+  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRouteRoute = IndexRouteRouteImport.update({
@@ -76,7 +76,7 @@ const AssetsEditIdRouteRoute = AssetsEditIdRouteRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
-  '/how-it-works': typeof HowItWorksRouteRoute
+  '/demo': typeof DemoRouteRoute
   '/assets': typeof AssetsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
@@ -88,7 +88,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
-  '/how-it-works': typeof HowItWorksRouteRoute
+  '/demo': typeof DemoRouteRoute
   '/assets': typeof AssetsIndexRouteRoute
   '/intermediaries': typeof IntermediariesIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
@@ -101,7 +101,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
-  '/how-it-works': typeof HowItWorksRouteRoute
+  '/demo': typeof DemoRouteRoute
   '/assets/': typeof AssetsIndexRouteRoute
   '/intermediaries/': typeof IntermediariesIndexRouteRoute
   '/assets/create': typeof AssetsCreateRouteRoute
@@ -115,7 +115,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/how-it-works'
+    | '/demo'
     | '/assets'
     | '/intermediaries'
     | '/assets/create'
@@ -127,7 +127,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/how-it-works'
+    | '/demo'
     | '/assets'
     | '/intermediaries'
     | '/assets/create'
@@ -139,7 +139,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/how-it-works'
+    | '/demo'
     | '/assets/'
     | '/intermediaries/'
     | '/assets/create'
@@ -152,7 +152,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
-  HowItWorksRouteRoute: typeof HowItWorksRouteRoute
+  DemoRouteRoute: typeof DemoRouteRoute
   AssetsIndexRouteRoute: typeof AssetsIndexRouteRoute
   IntermediariesIndexRouteRoute: typeof IntermediariesIndexRouteRoute
   AssetsCreateRouteRoute: typeof AssetsCreateRouteRoute
@@ -165,11 +165,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
-    '/how-it-works': {
-      id: '/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/how-it-works'
-      preLoaderRoute: typeof HowItWorksRouteRouteImport
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -240,7 +240,7 @@ declare module '@tanstack/solid-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
-  HowItWorksRouteRoute: HowItWorksRouteRoute,
+  DemoRouteRoute: DemoRouteRoute,
   AssetsIndexRouteRoute: AssetsIndexRouteRoute,
   IntermediariesIndexRouteRoute: IntermediariesIndexRouteRoute,
   AssetsCreateRouteRoute: AssetsCreateRouteRoute,

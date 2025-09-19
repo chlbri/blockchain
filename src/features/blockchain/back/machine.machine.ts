@@ -1,6 +1,20 @@
 import { createMachine, typings } from '@bemedev/app-ts';
+import sleep from '@bemedev/sleep';
 import { SCHEMAS } from './machine.machine.gen';
 import type { Asset, Intermediary } from './types';
+
+export const BLOCK_IMMO_INTERMEDIARY: Intermediary = {
+  id: 'block-immo-001',
+  wallet: '0xblockimmo123456',
+  personality: 'company',
+  companyName: 'Block Immo Services',
+  registrationNumber: 'BLOCKIMMO-001',
+  contacts: {
+    phoneNumbers: [{ countryCode: +225, number: 700000000 }],
+    emails: ['contact@block-immo.fr'],
+    websites: ['https://block-immo.fr'],
+  },
+};
 
 export const machine = createMachine(
   {
@@ -36,22 +50,25 @@ export const machine = createMachine(
                 },
               ],
             },
+            {
+              actions: ['error.noAsset'],
+            },
           ],
         },
       },
       checking: {
         promises: [
-          {
-            src: 'checkOnline',
-            description: 'Check if we are online',
-            then: {
-              actions: 'setOnlineStatus',
-            },
-            catch: {
-              target: '/idle',
-              actions: 'setOfflineStatus',
-            },
-          },
+          // {
+          //   src: 'checkOnline',
+          //   description: 'Check if we are online',
+          //   then: {
+          //     actions: 'setOnlineStatus',
+          //   },
+          //   catch: {
+          //     target: '/idle',
+          //     actions: 'setOnlineStatus',
+          //   },
+          // },
           {
             src: 'getIntermediaries',
             description: 'Fetch intermediaries from the blockchain',
@@ -62,7 +79,7 @@ export const machine = createMachine(
             catch: {
               target: '/idle',
               actions: {
-                name: 'setIntermediariesQueryError',
+                name: 'error.fetchIntermediaries',
                 description: 'Failed to fetch intermediaries',
               },
             },
@@ -74,34 +91,43 @@ export const machine = createMachine(
         states: {
           idle: {
             on: {
-              ADD_INTERMEDIARY: {
-                description: 'Add an intermediary',
-                guards: {
-                  and: [
-                    {
-                      name: 'intermediariesAreNotFull',
-                      description: 'Max 3/5/7 intermediaries',
-                    },
-                    'intermediaryIsNotAdded',
-                  ],
-                },
-                target: '/working/adding',
+              RESET: {
+                target: '/idle',
+                actions: ['reset'],
               },
+              ADD_INTERMEDIARY: [
+                {
+                  description: 'Add an intermediary',
+                  guards: {
+                    and: [
+                      {
+                        name: 'intermediariesAreNotFull',
+                        description: 'Max 3/5/7 intermediaries',
+                      },
+                      'intermediaryIsNotAdded',
+                    ],
+                  },
+                  target: '/working/adding',
+                },
+                {
+                  actions: ['error.addIntermediary'],
+                },
+              ],
             },
           },
           adding: {
             promises: [
-              {
-                src: 'checkOnline',
-                description: 'Check if we are online',
-                then: {
-                  actions: 'setOnlineStatus',
-                },
-                catch: {
-                  target: '/working/idle',
-                  actions: 'setOfflineStatus',
-                },
-              },
+              // {
+              //   src: 'checkOnline',
+              //   description: 'Check if we are online',
+              //   then: {
+              //     actions: 'setOnlineStatus',
+              //   },
+              //   catch: {
+              //     target: '/working/idle',
+              //     actions: 'setOnlineStatus',
+              //   },
+              // },
               {
                 src: 'addIntermediary',
                 description: 'Add the intermediary to the blockchain',
@@ -110,15 +136,17 @@ export const machine = createMachine(
                   actions: ['addIntermediary', 'end.add'],
                 },
                 catch: {
-                  target: '/working/idle',
+                  target: '/idle',
                   actions: [
                     {
-                      name: 'setAddIntermediaryError',
+                      name: 'error.online.addIntermediary',
                       description: 'Failed to add the intermediary',
                     },
+
                     'end.error.add',
                   ],
                 },
+                // max: 'MAX_MUTATE',
               },
             ],
           },
@@ -133,12 +161,35 @@ export const machine = createMachine(
         mandatory: typings.custom<Intermediary>(),
       }),
       ADD_INTERMEDIARY: typings.custom<Intermediary>(),
+      RESET: 'primitive',
     },
     context: typings.partial({
       asset: typings.custom<Asset>(),
       intermediaries: [typings.custom<Intermediary>()],
       internetStatus: 'boolean',
+      errors: typings.partial({
+        noAsset: 'string',
+        fetchIntermediaries: 'string',
+        intermediary: {
+          offline: 'string',
+          online: 'string',
+        },
+      }),
     }),
+    promiseesMap: {
+      checkOnline: {
+        then: 'boolean',
+        catch: 'boolean',
+      },
+      getIntermediaries: {
+        then: [typings.custom<Intermediary>()],
+        catch: [],
+      },
+      addIntermediary: {
+        then: typings.custom<Intermediary>(),
+        catch: 'undefined',
+      },
+    },
   }),
 ).provideOptions(({ assign }) => ({
   actions: {
@@ -146,24 +197,101 @@ export const machine = createMachine(
       START: ({ payload }) => payload.asset,
     }),
 
+    reset: assign('context.intermediaries', () => []),
+
     addMandatoryIntermediary: assign('context.intermediaries', {
       START: ({ payload }) => [payload.mandatory],
     }),
 
     addBlockImmoIntermediary: assign('context.intermediaries', {
       START: ({ context: { intermediaries = [] } }) => [
-        ...intermediaries /*, TODO: Add BLOCK_IMMO intermediary */,
+        ...intermediaries,
+        BLOCK_IMMO_INTERMEDIARY,
       ],
     }),
-    setOnlineStatus: assign('context.internetStatus', () => true),
-    setOfflineStatus: assign('context.internetStatus', () => false),
+
+    'error.noAsset': assign(
+      'context.errors.noAsset',
+      () => 'Asset is required to start the machine',
+    ),
+
+    setOnlineStatus: assign('context.internetStatus', {
+      'checkOnline::then': ({ payload }) => payload,
+      'checkOnline::catch': ({ payload }) => payload,
+    }),
+
+    addIntermediaries: assign('context.intermediaries', {
+      'getIntermediaries::then': ({
+        payload,
+        context: { intermediaries = [] },
+      }) => [...intermediaries, ...payload],
+    }),
+
+    'error.fetchIntermediaries': assign(
+      'context.errors.fetchIntermediaries',
+      () => 'Failed to fetch intermediaries',
+    ),
+
+    'error.addIntermediary': assign(
+      'context.errors.intermediary.offline',
+      () => 'Cannot add this intermediary',
+    ),
+
+    addIntermediary: assign('context.intermediaries', {
+      'addIntermediary::then': ({
+        payload,
+        context: { intermediaries = [] },
+      }) => [...intermediaries, payload],
+    }),
+
+    'error.online.addIntermediary': assign(
+      'context.errors.intermediary.online',
+      () => 'Failed to add the intermediary due to online issue',
+    ),
   },
+
   predicates: {
     assetIsDefined: {
       START: ({ payload }) => !!payload.asset,
     },
+
     mandatoryIsDefined: {
       START: ({ payload }) => !!payload.mandatory,
+    },
+
+    intermediariesAreNotFull: ({
+      context: { asset, intermediaries = [] },
+    }) => {
+      const value = asset!.value;
+      const max = value > 30_000_000 ? 7 : value > 3_000_000 ? 5 : 3;
+
+      return intermediaries.length < max;
+    },
+    intermediaryIsNotAdded: {
+      ADD_INTERMEDIARY: ({ context: { intermediaries = [] }, payload }) =>
+        !intermediaries.some(
+          intermediary => intermediary.id === payload.id,
+        ),
+    },
+  },
+  delays: {
+    // TODO: Fix withTimeout inside lib @bemedev/app-ts
+    MAX_MUTATE: 1000,
+  },
+  promises: {
+    checkOnline: async () => {
+      await sleep(100); // Simulation réseau
+      return true;
+    },
+    getIntermediaries: async () => {
+      await sleep(200);
+      return [];
+    },
+    addIntermediary: {
+      ADD_INTERMEDIARY: async ({ payload }) => {
+        await sleep(100); // Simulation blockchain
+        return payload;
+      },
     },
   },
 }));

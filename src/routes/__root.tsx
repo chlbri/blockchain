@@ -25,6 +25,14 @@ export const Route = createRootRoute({
     ],
   }),
   notFoundComponent: NotFound,
+  errorComponent: ({ error }) => (
+    <div class='min-h-screen flex flex-col items-center justify-center bg-red-50 dark:bg-red-900 text-red-900 dark:text-red-100 p-4'>
+      <h1 class='text-4xl font-bold mb-4'>Something went wrong!</h1>
+      <pre class='bg-white dark:bg-gray-800 p-4 rounded shadow overflow-x-auto max-w-full'>
+        {error.message}
+      </pre>
+    </div>
+  ),
   shellComponent: () => {
     // onCleanup(stop);
     return (
