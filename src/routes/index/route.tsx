@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/solid-router';
+import { createFileRoute, Link } from '@tanstack/solid-router';
 
 export const Route = createFileRoute('/')({
   component: () => {
@@ -9,6 +9,23 @@ export const Route = createFileRoute('/')({
             BLOCK-IMMO
           </h1>
           <p class='italic text-xl'>(La plateforme est en chantier ...)</p>
+
+          {/* Bouton de démonstration */}
+          <div class='my-8'>
+            <Link
+              to='/demo'
+              class='inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200'
+            >
+              <span class='text-2xl'>🎮</span>
+              <div class='text-left'>
+                <div class='text-lg'>Essayer la Démonstration</div>
+                <div class='text-sm opacity-90'>
+                  Découvrez le système interactif
+                </div>
+              </div>
+            </Link>
+          </div>
+
           <h2 class='text-4xl font-bold text-slate-900 dark:text-white py-8'>
             Plateforme Blockchain pour l'Immobilier
           </h2>
@@ -103,6 +120,20 @@ export const Route = createFileRoute('/')({
               fonctionnalités et découvrir comment notre solution
               transforme le secteur immobilier.
             </p>
+
+            {/* Call to action vers la démo */}
+            <div class='text-center mt-12'>
+              <Link
+                to='/demo'
+                class='inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200'
+              >
+                <span class='text-xl'>🚀</span>
+                Tester la Démonstration Interactive
+              </Link>
+              <p class='text-sm text-gray-500 dark:text-gray-400 mt-2'>
+                Expérimentez notre système de distribution de commissions
+              </p>
+            </div>
           </div>
         </div>
       </div>

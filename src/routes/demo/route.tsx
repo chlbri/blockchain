@@ -123,56 +123,58 @@ function DemoGame() {
           </p>
 
           {/* Configuration par défaut */}
-          <div class='bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 shadow-md'>
-            <h3 class='text-xl font-semibold text-slate-900 dark:text-white mb-4'>
-              ⚙️ Configuration par défaut
-            </h3>
-            <div class='grid lg:grid-cols-2 gap-6 text-left'>
-              <div class='bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm flex flex-col items-center justify-center'>
-                <h4 class='font-semibold text-blue-600 dark:text-blue-400 mb-2'>
-                  💰 Commission totale
-                </h4>
-                <p class='text-2xl font-bold text-gray-900 dark:text-gray-100'>
-                  5%
-                </p>
-                <p class='text-sm text-gray-600 dark:text-gray-400'>
-                  De la valeur du bien
-                </p>
-              </div>
+          <Show when={!gameState().gameStarted}>
+            <div class='bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 shadow-md'>
+              <h3 class='text-xl font-semibold text-slate-900 dark:text-white mb-4'>
+                ⚙️ Configuration par défaut
+              </h3>
+              <div class='grid lg:grid-cols-2 gap-6 text-left'>
+                <div class='bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm flex flex-col items-center justify-center'>
+                  <h4 class='font-semibold text-blue-600 dark:text-blue-400 mb-2'>
+                    💰 Commission totale
+                  </h4>
+                  <p class='text-2xl font-bold text-gray-900 dark:text-gray-100'>
+                    5%
+                  </p>
+                  <p class='text-sm text-gray-600 dark:text-gray-400'>
+                    De la valeur du bien
+                  </p>
+                </div>
 
-              <div class='bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm'>
-                <h4 class='font-semibold text-green-600 dark:text-green-400 mb-3'>
-                  📊 Répartitions par défaut
-                </h4>
-                <div class='space-y-2 text-sm'>
-                  <For each={DEFAULT_REPARTITIONS}>
-                    {(repartition, index) => (
-                      <div class='flex justify-between items-center'>
-                        <span class='text-gray-700 dark:text-gray-300'>
-                          {index() + 1} intermédiaire
-                          {index() > 0 ? 's' : ''}:
-                        </span>
-                        <div class='flex gap-2'>
-                          <For each={repartition}>
-                            {percentage => (
-                              <span class='bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 py-1 px-1.5 rounded text-xs font-medium'>
-                                {percentage}%
-                              </span>
-                            )}
-                          </For>
+                <div class='bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm'>
+                  <h4 class='font-semibold text-green-600 dark:text-green-400 mb-3'>
+                    📊 Clé de répartitions
+                  </h4>
+                  <div class='space-y-2 text-sm'>
+                    <For each={DEFAULT_REPARTITIONS}>
+                      {(repartition, index) => (
+                        <div class='flex justify-between items-center'>
+                          <span class='text-gray-700 dark:text-gray-300'>
+                            {index() + 1} intermédiaire
+                            {index() > 0 ? 's' : ''}:
+                          </span>
+                          <div class='flex gap-2'>
+                            <For each={repartition}>
+                              {percentage => (
+                                <span class='bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 py-1 px-1.5 rounded text-xs font-medium'>
+                                  {percentage}%
+                                </span>
+                              )}
+                            </For>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </For>
+                      )}
+                    </For>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <p class='text-sm text-gray-600 dark:text-gray-400 mt-4 italic'>
-              Les répartitions s'ajustent automatiquement selon le nombre
-              d'intermédiaires dans la chaîne
-            </p>
-          </div>
+              <p class='text-sm text-gray-600 dark:text-gray-400 mt-4 italic'>
+                Les répartitions s'ajustent automatiquement selon le nombre
+                d'intermédiaires dans la chaîne
+              </p>
+            </div>
+          </Show>
         </div>
 
         {/* Status Bar */}
@@ -294,7 +296,7 @@ function DemoGame() {
 
             <div class='mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg'>
               <h4 class='font-semibold mb-2 text-slate-900 dark:text-white'>
-                ℹ️ Comment jouer :
+                ℹ️ Comment ça marche :
               </h4>
               <ul class='text-sm text-gray-600 dark:text-gray-300 space-y-1'>
                 <li>• Choisissez un type de transaction pour commencer</li>
@@ -406,18 +408,17 @@ function DemoGame() {
                   ➕ Ajouter un intermédiaire
                 </h3>
                 <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3'>
-                  <For
-                    each={availableIntermediaries.filter(
-                      inter =>
-                        !currentIntermediaries().some(
-                          (current: any) => current.id === inter.id,
-                        ),
-                    )}
-                  >
+                  <For each={availableIntermediaries}>
                     {intermediary => (
                       <button
                         onClick={() => addIntermediary(intermediary)}
-                        disabled={isAdding()}
+                        disabled={
+                          isAdding() ||
+                          currentIntermediaries().some(
+                            inter => inter.id === intermediary.id,
+                          ) ||
+                          !canAddMore()
+                        }
                         class='p-3 border border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md group'
                       >
                         <div class='text-center'>
