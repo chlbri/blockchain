@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@bemedev/app-solid':
         specifier: ^0.2.4
-        version: 0.2.4(@bemedev/app-ts@1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(solid-js@1.9.9)
+        version: 0.2.4(@bemedev/app-ts@1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(solid-js@1.9.9)
       '@bemedev/app-ts':
-        specifier: ^1.0.0
-        version: 1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+        specifier: ^1.0.1
+        version: 1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       '@bemedev/i18n':
         specifier: ^0.2.1
         version: 0.2.1(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)
@@ -80,7 +80,7 @@ importers:
     devDependencies:
       '@bemedev/app-cli':
         specifier: ^0.1.7
-        version: 0.1.7(@bemedev/app-ts@1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+        version: 0.1.7(@bemedev/app-ts@1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       '@bemedev/fsf':
         specifier: ^0.8.0
         version: 0.8.0
@@ -326,8 +326,8 @@ packages:
       '@bemedev/types': ^0.4.2
       solid-js: ^1.9.9
 
-  '@bemedev/app-ts@1.0.0':
-    resolution: {integrity: sha512-SWC7kf7lHLwsJBBVsSzqymMBu/MlIszwm5HvYBbKUkeyN4uV8/Jp/noa/GPeXCKeNwhZrVtq5qKwpOH57UvRHw==}
+  '@bemedev/app-ts@1.0.1':
+    resolution: {integrity: sha512-JxtETXlB6k0dbx4x46GqceTQvTlhGwcsARVvojSVHQ41QbvsC4sBrOk9yJ4KCFOmai3ZjZT+xXIorm5lCeB4HA==}
     engines: {node: '>=22'}
 
   '@bemedev/basifun@0.5.3':
@@ -4039,9 +4039,9 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@bemedev/app-cli@0.1.7(@bemedev/app-ts@1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))':
+  '@bemedev/app-cli@0.1.7(@bemedev/app-ts@1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))':
     dependencies:
-      '@bemedev/app-ts': 1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+      '@bemedev/app-ts': 1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       '@bemedev/decompose': 1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       chokidar: 4.0.3
       cmd-ts: 0.14.1
@@ -4053,14 +4053,14 @@ snapshots:
       - supports-color
       - vitest
 
-  '@bemedev/app-solid@0.2.4(@bemedev/app-ts@1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(solid-js@1.9.9)':
+  '@bemedev/app-solid@0.2.4(@bemedev/app-ts@1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)))(@bemedev/types@0.4.2)(solid-js@1.9.9)':
     dependencies:
-      '@bemedev/app-ts': 1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
+      '@bemedev/app-ts': 1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       '@bemedev/decompose': 1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))
       '@bemedev/types': 0.4.2
       solid-js: 1.9.9
 
-  '@bemedev/app-ts@1.0.0(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))':
+  '@bemedev/app-ts@1.0.1(vitest@3.2.4(@types/node@24.5.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5))':
     dependencies:
       '@bemedev/basifun': 0.5.3
       '@bemedev/boolean-recursive': 0.0.3

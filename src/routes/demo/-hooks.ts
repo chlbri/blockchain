@@ -5,6 +5,7 @@ import type {
   Currency,
   Intermediary,
 } from '#features/blockchain/back/types';
+import sleep from '@bemedev/sleep';
 import { deepEqual } from 'fast-equals';
 import { createEffect, createSignal, onCleanup, onMount } from 'solid-js';
 
@@ -187,13 +188,40 @@ export const availableIntermediaries: Intermediary[] = [
 ];
 
 export const useHooks = () => {
-  const { start, stop, select, context, send, matches, value } =
-    createService();
+  const {
+    start,
+    stop,
+    select,
+    context,
+    send,
+    matches,
+    value,
+    addOptions,
+  } = createService();
 
   const [gameState, setGameState] = createSignal<GameState>({
     availableIntermediaries,
     gameStarted: false,
   });
+
+  addOptions(() => ({
+    promises: {
+      checkOnline: async () => {
+        await sleep(100); // Simulation réseau
+        return true;
+      },
+      getIntermediaries: async () => {
+        await sleep(200);
+        return [];
+      },
+      addIntermediary: {
+        ADD_INTERMEDIARY: async ({ payload }) => {
+          await sleep(100); // Simulation blockchain
+          return payload;
+        },
+      },
+    },
+  }));
 
   createEffect(() => {
     console.log('State changed:', value());

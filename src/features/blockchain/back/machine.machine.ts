@@ -1,5 +1,4 @@
 import { createMachine, typings } from '@bemedev/app-ts';
-import sleep from '@bemedev/sleep';
 import { SCHEMAS } from './machine.machine.gen';
 import type { Asset, Intermediary } from './types';
 
@@ -58,17 +57,17 @@ export const machine = createMachine(
       },
       checking: {
         promises: [
-          // {
-          //   src: 'checkOnline',
-          //   description: 'Check if we are online',
-          //   then: {
-          //     actions: 'setOnlineStatus',
-          //   },
-          //   catch: {
-          //     target: '/idle',
-          //     actions: 'setOnlineStatus',
-          //   },
-          // },
+          {
+            src: 'checkOnline',
+            description: 'Check if we are online',
+            then: {
+              actions: 'setOnlineStatus',
+            },
+            catch: {
+              target: '/idle',
+              actions: 'setOnlineStatus',
+            },
+          },
           {
             src: 'getIntermediaries',
             description: 'Fetch intermediaries from the blockchain',
@@ -117,17 +116,17 @@ export const machine = createMachine(
           },
           adding: {
             promises: [
-              // {
-              //   src: 'checkOnline',
-              //   description: 'Check if we are online',
-              //   then: {
-              //     actions: 'setOnlineStatus',
-              //   },
-              //   catch: {
-              //     target: '/working/idle',
-              //     actions: 'setOnlineStatus',
-              //   },
-              // },
+              {
+                src: 'checkOnline',
+                description: 'Check if we are online',
+                then: {
+                  actions: 'setOnlineStatus',
+                },
+                catch: {
+                  target: '/working/idle',
+                  actions: 'setOnlineStatus',
+                },
+              },
               {
                 src: 'addIntermediary',
                 description: 'Add the intermediary to the blockchain',
@@ -191,13 +190,13 @@ export const machine = createMachine(
       },
     },
   }),
-).provideOptions(({ assign }) => ({
+).provideOptions(({ assign, rinitFn }) => ({
   actions: {
     provideAsset: assign('context.asset', {
       START: ({ payload }) => payload.asset,
     }),
 
-    reset: assign('context.intermediaries', () => []),
+    reset: assign('context', rinitFn),
 
     addMandatoryIntermediary: assign('context.intermediaries', {
       START: ({ payload }) => [payload.mandatory],
@@ -277,21 +276,5 @@ export const machine = createMachine(
   delays: {
     // TODO: Fix withTimeout inside lib @bemedev/app-ts
     MAX_MUTATE: 1000,
-  },
-  promises: {
-    checkOnline: async () => {
-      await sleep(100); // Simulation réseau
-      return true;
-    },
-    getIntermediaries: async () => {
-      await sleep(200);
-      return [];
-    },
-    addIntermediary: {
-      ADD_INTERMEDIARY: async ({ payload }) => {
-        await sleep(100); // Simulation blockchain
-        return payload;
-      },
-    },
   },
 }));
