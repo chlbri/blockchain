@@ -1,5 +1,5 @@
 import { CURRENCIES } from '#features/blockchain/back';
-import { createService } from '#features/blockchain/back/service';
+import { createService } from './-services/main';
 import type {
   Asset,
   Currency,

@@ -1,6 +1,6 @@
 import { createMachine, typings } from '@bemedev/app-ts';
 import { SCHEMAS } from './machine.machine.gen';
-import type { Asset, Intermediary } from './types';
+import { Asset, Intermediary } from '#features/blockchain/back';
 
 export const BLOCK_IMMO_INTERMEDIARY: Intermediary = {
   id: 'block-immo-001',
