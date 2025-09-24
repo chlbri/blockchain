@@ -1,5 +1,4 @@
 import { CURRENCIES } from '#features/blockchain/back';
-import { createService } from './-services/main';
 import type {
   Asset,
   Currency,
@@ -8,6 +7,7 @@ import type {
 import sleep from '@bemedev/sleep';
 import { deepEqual } from 'fast-equals';
 import { createEffect, createSignal, onCleanup, onMount } from 'solid-js';
+import { createService } from './-services/main';
 
 // Types pour la démo
 export type GameMode = 'with-mandatory' | 'without-mandatory';
@@ -197,6 +197,7 @@ export const useHooks = () => {
     matches,
     value,
     addOptions,
+    subscribe,
   } = createService();
 
   const [gameState, setGameState] = createSignal<GameState>({
@@ -222,6 +223,10 @@ export const useHooks = () => {
       },
     },
   }));
+
+  subscribe(({ value }) => {
+    console.log('New state:', value);
+  });
 
   createEffect(() => {
     console.log('State changed:', value());

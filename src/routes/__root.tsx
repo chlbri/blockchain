@@ -33,7 +33,14 @@ export const Route = createRootRoute({
       </pre>
     </div>
   ),
-  shellComponent: () => {
+  pendingComponent: () => (
+    <div class='min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+      <div class='ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32'>
+        Loading ....
+      </div>
+    </div>
+  ),
+  component: () => {
     // onCleanup(stop);
     return (
       <>
