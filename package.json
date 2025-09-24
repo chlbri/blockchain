@@ -38,7 +38,7 @@
     "public"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "ci": "pnpm run config:off && pnpm run lint && pnpm run test && pnpm run prettier && pnpm run p-q",
