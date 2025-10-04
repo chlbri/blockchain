@@ -1,4 +1,4 @@
-import type { Asset } from '#types';
+import type { Asset, Currency } from '#types';
 import { createMachine, typings } from '@bemedev/app-ts';
 import ls from 'localstorage-slim';
 import { SCHEMAS } from './-machine.machine.gen';
@@ -92,7 +92,7 @@ export const machine = createMachine(
       id: 'string',
       description: 'string',
       value: 'string',
-      currency: 'string',
+      currency: typings.custom<Currency>(),
 
       medias: typings.partial({
         photos: typings.custom<string[]>(),

@@ -29,7 +29,7 @@ export const useHooks = (id: string) => {
 
         // Convert currency string to Currency object
         const currencyObj = CURRENCIES.find(
-          c => c.bank === asset.currency,
+          c => c.bank === asset.currency?.bank,
         );
         const assetWithCurrency = {
           ...asset,

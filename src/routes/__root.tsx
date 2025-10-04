@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 import HeadLinks from '#components/organisms/HeadLinks';
-import { NotFound as notFoundComponent} from '#components/pages/NotFound';
+import { NotFound as notFoundComponent } from '#components/pages/NotFound';
 import appCss from '#styles/app.css?url';
 import { createRootRoute, Outlet } from '@tanstack/solid-router';
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools';

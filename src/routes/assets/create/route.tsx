@@ -4,7 +4,7 @@ import { AmountInput } from '#components/organisms/AmountInput';
 import { Medias } from '#components/organisms/Medias';
 import { CURRENCIES } from '#features/blockchain/back';
 import { createFileRoute } from '@tanstack/solid-router';
-import { deepEqual } from 'fast-equals';
+import { deepEqual } from '@bemedev/app-ts';
 import { For, onMount } from 'solid-js';
 import { useHooks } from './-hooks';
 import { start } from './-services/form';

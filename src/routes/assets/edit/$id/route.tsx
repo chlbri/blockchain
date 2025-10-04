@@ -76,7 +76,7 @@ export const Route = createFileRoute('/assets/edit/$id')({
 
                 <Currency
                   currencies={CURRENCIES}
-                  current={select('context.currency', deepEqual)}
+                  current={select('context.currency.bank', deepEqual)}
                   setCurrent={value =>
                     send({
                       type: 'UPDATE_CURRENCY',
