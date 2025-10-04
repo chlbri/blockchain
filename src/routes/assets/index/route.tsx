@@ -98,7 +98,7 @@ function AssetsPage() {
             <For each={filtereds()}>
               {asset => (
                 <div class='border border-gray-200 dark:border-gray-600 rounded-lg p-6 hover:shadow-md transition-shadow duration-200'>
-                  <div class='grid grid-cols-1 md:grid-cols-4 gap-4 items-start'>
+                  <div class='grid grid-cols-1 md:grid-cols-5 gap-4 items-start'>
                     {/* Asset Info */}
                     <div class='md:col-span-2'>
                       <div class='flex items-start justify-between mb-2'>
@@ -133,10 +133,12 @@ function AssetsPage() {
                       </div>
                     </div>
 
+                    <div class='hidden md:flex lg:hidden' />
+
                     {/* Actions */}
-                    <div class='flex gap-2 justify-end'>
+                    <div class='flex-row space-x-2 md:flex-col md:space-x-2 md:space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0 lg:col-span-2'>
                       <button
-                        class='px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors'
+                        class='px-2 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors'
                         onClick={() => openViewSheet(asset)}
                       >
                         Aperçu
@@ -144,7 +146,7 @@ function AssetsPage() {
                       <Link
                         to='/assets/edit/$id'
                         params={{ id: asset.id }}
-                        class='px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors inline-block'
+                        class='px-2 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors inline-block'
                       >
                         Éditer
                       </Link>
