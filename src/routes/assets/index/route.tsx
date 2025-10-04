@@ -46,7 +46,7 @@ function AssetsPage() {
                 </p>
               </div>
               <Link
-                to='/contracts/create'
+                to='/assets/create'
                 class='bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200'
               >
                 Créer un Asset
@@ -142,7 +142,7 @@ function AssetsPage() {
                         Aperçu
                       </button>
                       <Link
-                        to='/contracts/edit/$id'
+                        to='/assets/edit/$id'
                         params={{ id: asset.id }}
                         class='px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors inline-block'
                       >
@@ -175,7 +175,7 @@ function AssetsPage() {
                     : "Vous n'avez pas encore créé d'asset."}
                 </p>
                 <Link
-                  to='/contracts/create'
+                  to='/assets/create'
                   class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200'
                 >
                   Créer votre premier Asset

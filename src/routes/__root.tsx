@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 import HeadLinks from '#components/organisms/HeadLinks';
-import { NotFound } from '#components/pages/NotFound';
+import { NotFound as notFoundComponent} from '#components/pages/NotFound';
 import appCss from '#styles/app.css?url';
 import { createRootRoute, Outlet } from '@tanstack/solid-router';
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools';
@@ -24,7 +24,7 @@ export const Route = createRootRoute({
       }),
     ],
   }),
-  notFoundComponent: NotFound,
+  notFoundComponent,
   errorComponent: ({ error }) => (
     <div class='min-h-screen flex flex-col items-center justify-center bg-red-50 dark:bg-red-900 text-red-900 dark:text-red-100 p-4'>
       <h1 class='text-4xl font-bold mb-4'>Something went wrong!</h1>
@@ -41,7 +41,6 @@ export const Route = createRootRoute({
     </div>
   ),
   component: () => {
-    // onCleanup(stop);
     return (
       <>
         <HeadLinks />

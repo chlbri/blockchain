@@ -61,7 +61,7 @@ export const useHooks = (id: string) => {
     actions: {
       end: voidAction(() => {
         navigate({
-          to: '/contracts',
+          to: '/assets',
           replace: true,
         });
       }),
