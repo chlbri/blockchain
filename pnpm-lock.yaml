@@ -17,6 +17,9 @@ importers:
       '@bemedev/i18n':
         specifier: ^0.3.0
         version: 0.3.0(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6)))(@bemedev/types@0.4.2)
+      '@bemedev/permissions':
+        specifier: ^0.1.2
+        version: 0.1.2(@bemedev/core@0.1.2(typescript@5.9.3))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6)))
       '@bemedev/sleep':
         specifier: 0.1.2
         version: 0.1.2
@@ -74,6 +77,9 @@ importers:
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
+      valibot:
+        specifier: ^1.1.0
+        version: 1.1.0(typescript@5.9.3)
       vite:
         specifier: ^7.1.9
         version: 7.1.9(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6)
@@ -345,6 +351,16 @@ packages:
     peerDependencies:
       vitest: ^3.2.4
 
+  '@bemedev/codebase@0.1.1':
+    resolution: {integrity: sha512-5X+JukmT/4pJLhllo9l0Cozc/6cqofWaWTE/xk/8ER9B2SHSMGNQl/ZtEYoZGJl+DoT/vzGtLH7oaZMwNi63Ew==}
+    engines: {node: '>=22'}
+    hasBin: true
+
+  '@bemedev/core@0.1.2':
+    resolution: {integrity: sha512-9i80z+2TtpNuqEmOw7r2k8HfTLog5ShvOP2i0Aum3A7xI4HKD4N4gI2x1Qml0wZ+9LKg7Dg8JCGYTr6irWRnmw==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   '@bemedev/decompose@1.3.1':
     resolution: {integrity: sha512-EGiPuZU2m4O+/Rqsi+QWiaF+5iQUqKbqZwU/jL9iJHfmlqjkStI1M/L4GVbAGFGTIhD64tDTOXbh5UdcwEiKPA==}
     engines: {node: '>=20'}
@@ -364,6 +380,13 @@ packages:
   '@bemedev/interval2@0.1.3':
     resolution: {integrity: sha512-RWbferVoFH0CkpeNZ7DW2MFdl04clqp4Q9WaiQAqlW8kgsizQltXhy780QDtWkQi+cRLWZ9j/ItYcVJ1nr+vDQ==}
     engines: {node: '>=20'}
+
+  '@bemedev/permissions@0.1.2':
+    resolution: {integrity: sha512-+n0XDLMczkKk6y61hjNC7uhszhpWP22WF0fwxx11/LyP6K/EV7AiCxAknLT4j/RViKMJFpmLDqiSGKB//+bmQQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@bemedev/core': ^0.1.2
+      '@bemedev/decompose': ^1.3.1
 
   '@bemedev/rollup-config@0.2.2':
     resolution: {integrity: sha512-bpJgtRVYtGaHYPglG+6zJQZaf0ijqx5gTbOvgXNIq5Nsud9p7aa+MMzFMNxd9DONGuq2Y0Z/8mAR2GsEe2kLWA==}
@@ -1380,6 +1403,9 @@ packages:
 
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
+
+  '@ts-morph/common@0.28.0':
+    resolution: {integrity: sha512-4w6X/oFmvXcwux6y6ExfM/xSqMHw20cYwFJH+BlYrtGa6nwY9qGq8GXnUs1sVYeF2o/KT3S8hAH6sKBI3VOkBg==}
 
   '@types/babel__code-frame@7.0.6':
     resolution: {integrity: sha512-Anitqkl3+KrzcW2k77lRlg/GfLZLWXBuNgbEcIOU6M92yw42vsd3xV/Z/yAHEj8m+KUjL6bWOVOFqX8PFPJ4LA==}
@@ -3476,6 +3502,9 @@ packages:
   ts-morph@26.0.0:
     resolution: {integrity: sha512-ztMO++owQnz8c/gIENcM9XfCEzgoGphTv+nKpYNM1bgsdOVC/jRZuEBf6N+mLLDNg68Kl+GgUZfOySaRiG1/Ug==}
 
+  ts-morph@27.0.0:
+    resolution: {integrity: sha512-xcqelpTR5PCuZMs54qp9DE3t7tPgA2v/P1/qdW4ke5b3Y5liTGTYj6a/twT35EQW/H5okRqp1UOqwNlgg0K0eQ==}
+
   tsc-alias@1.8.16:
     resolution: {integrity: sha512-QjCyu55NFyRSBAl6+MTFwplpFcnm2Pq01rR/uxfqJoLMm6X3O14KEGtaSDZpJYaE1bJBGDjD0eSuiIWPe2T58g==}
     engines: {node: '>=16.20.2'}
@@ -3652,6 +3681,14 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  valibot@1.1.0:
+    resolution: {integrity: sha512-Nk8lX30Qhu+9txPYTwM0cFlWLdPFsFr6LblzqIySfbZph9+BFsAHsNvHOymEviUepeIW6KFHzpX8TKhbptBXXw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   validate-html-nesting@1.2.3:
     resolution: {integrity: sha512-kdkWdCl6eCeLlRShJKbjVOU2kFKxMF8Ghu50n+crEoyx+VKm3FxAxF9z4DCy6+bbTOqNW0+jcIYRnjoIRzigRw==}
@@ -4099,6 +4136,28 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@bemedev/codebase@0.1.1(typescript@5.9.3)':
+    dependencies:
+      cmd-ts: 0.14.2
+      edit-json-file: 1.8.1
+      ts-morph: 26.0.0
+      valibot: 1.1.0(typescript@5.9.3)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  '@bemedev/core@0.1.2(typescript@5.9.3)':
+    dependencies:
+      '@bemedev/codebase': 0.1.1(typescript@5.9.3)
+      chokidar: 4.0.3
+      cmd-ts: 0.14.2
+      edit-json-file: 1.8.1
+      ts-morph: 27.0.0
+      valibot: 1.1.0(typescript@5.9.3)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   '@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))':
     dependencies:
       '@bemedev/build-tests': 0.1.2(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
@@ -4121,6 +4180,11 @@ snapshots:
   '@bemedev/interval2@0.1.3':
     dependencies:
       '@bemedev/sleep': 0.1.2
+
+  '@bemedev/permissions@0.1.2(@bemedev/core@0.1.2(typescript@5.9.3))(@bemedev/decompose@1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6)))':
+    dependencies:
+      '@bemedev/core': 0.1.2(typescript@5.9.3)
+      '@bemedev/decompose': 1.3.1(@bemedev/types@0.4.2)(vitest@3.2.4(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
 
   '@bemedev/rollup-config@0.2.2(glob@11.0.3)(rollup@4.52.4)(typescript@5.9.3)':
     dependencies:
@@ -5211,6 +5275,12 @@ snapshots:
       fast-glob: 3.3.3
       minimatch: 10.0.3
       path-browserify: 1.0.1
+
+  '@ts-morph/common@0.28.0':
+    dependencies:
+      minimatch: 10.0.3
+      path-browserify: 1.0.1
+      tinyglobby: 0.2.15
 
   '@types/babel__code-frame@7.0.6': {}
 
@@ -7441,6 +7511,11 @@ snapshots:
       '@ts-morph/common': 0.27.0
       code-block-writer: 13.0.3
 
+  ts-morph@27.0.0:
+    dependencies:
+      '@ts-morph/common': 0.28.0
+      code-block-writer: 13.0.3
+
   tsc-alias@1.8.16:
     dependencies:
       chokidar: 3.6.0
@@ -7594,6 +7669,10 @@ snapshots:
       punycode: 2.3.1
 
   util-deprecate@1.0.2: {}
+
+  valibot@1.1.0(typescript@5.9.3):
+    optionalDependencies:
+      typescript: 5.9.3
 
   validate-html-nesting@1.2.3: {}
 
