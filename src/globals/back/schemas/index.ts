@@ -5,4 +5,3 @@ export * from './file';
 export * from './location';
 export * from './phoneNumber';
 export * from './social';
-
