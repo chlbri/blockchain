@@ -23,7 +23,7 @@ commit :
 ### 4. Référez-vous aux tickets ou issues
 
 - Si possible, incluez des références aux tickets ou issues correspondants,
-  par exemple : "Corrige le bug #123".
+  par exemple : "Corrige le bug 123".
 
 ### 5. Structurez vos messages
 

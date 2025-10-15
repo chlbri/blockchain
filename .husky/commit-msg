@@ -1,5 +1,4 @@
 # Récupère le message de commit depuis le fichier passé en paramètre
-
 commit_msg_file="$1"
 commit_msg=$(cat "$commit_msg_file")
 
@@ -8,6 +7,15 @@ echo "Vérification du message de commit msg : $commit_msg"
 # Vérifie si le message contient "_NO_CI"
 if echo "$commit_msg" | grep -q "\_NO\_CI"; then
   echo "🚫 Tests ignorés : _NO_CI détecté dans le message de commit"
+  exit 0
+fi
+
+# Vérifie si seuls des fichiers dans .github/docs ont été modifiés
+changed_files=$(git diff --cached --name-only)
+non_docs_files=$(echo "$changed_files" | grep -v "^\.github/docs/" || true)
+
+if [ -n "$changed_files" ] && [ -z "$non_docs_files" ]; then
+  echo "🚫 Tests ignorés : seuls des fichiers dans .github/docs ont été modifiés"
   exit 0
 fi
 
